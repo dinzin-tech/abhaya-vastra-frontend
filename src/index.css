@@ -1,0 +1,43 @@
+
+/* 1️⃣ Import the correct font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Rubik+One&display=swap');
+
+:root {
+  --bg-color: #f5f5f5;
+  --text-color-primary: #222;
+  --text-color-secondary: #666;
+  /* --accent-color: #b8860b; */
+  /* --accent-color: #28a745; */
+  /* --accent-color: #724cf9; */
+  /* --accent-color: #A1712F; */
+  --accent-color: #651423;
+  /* --accent-2-color: #2c0735; */
+  --accent-2-color: #040605;
+  /* --accent-2-color: #feecec; */
+  --bg-card: rgba(2, 1, 1, 0.8);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --footer-bg: #1a202c;
+  --footer-text: #e2e8f0;
+  --footer-link: #cbd5e0;
+}
+
+body {
+  /* font-family: 'Rubik One', sans-serif; */
+  /* font-family:  sans-serif; */
+  font-family: poppins;
+    /* background: #e6b53d; */
+
+  background: linear-gradient(to bottom right, #fffaf1, #fff4d8);
+  color: var(--text-color-primary);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

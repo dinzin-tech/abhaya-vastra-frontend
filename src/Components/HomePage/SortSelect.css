@@ -1,0 +1,78 @@
+/* SortSelect.css */
+
+.sort-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* button - md size (~18px) */
+.sort-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 20px; /* md size */
+  color: #333;
+}
+
+/* subtle hover background for affordance */
+.sort-icon-btn:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+/* dropdown appears below the icon (aligned to right by default) */
+.sort-dropdown {
+  position: absolute;
+  top: calc(100% + 8px); /* below icon */
+  right: 0;
+  min-width: 170px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.12);
+  border: 1px solid rgba(16,24,40,0.06);
+  z-index: 1200;
+  padding: 6px 0;
+  transform-origin: top right;
+  animation: dropdown-pop .12s ease-out;
+}
+
+/* small pop animation */
+@keyframes dropdown-pop {
+  from { transform: translateY(-4px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.sort-option {
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sort-option:hover {
+  background: #f7f7fb;
+}
+
+.sort-option.active {
+  font-weight: 600;
+  background: rgba(200,138,11,0.06); /* soft highlight */
+}
+
+/* desktop vs mobile wrapper classes (if needed) */
+.sort-icon-wrapper.mobile {
+  margin-left: 10px;
+}
+
+/* Small responsive tweak for mobile sizes */
+@media (max-width: 900px) {
+  .sort-dropdown {
+    right: 6px;
+    left: auto;
+    min-width: 160px;
+  }
+}

@@ -1,0 +1,438 @@
+.product-page-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.product-display-grid {
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: white;
+}
+
+.image-gallery-container {
+  width: 100%;
+  padding: 30px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+  height: 100%; /* Ensure container fills grid cell height */
+}
+
+.main-product-image-container {
+  width: 100%;
+  height: 600px; /* like banner height */
+  overflow: hidden;
+  border-radius: 10px;
+  position: relative;
+}
+
+.main-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills container, crops if needed */
+  border-radius: 10px;
+  cursor: zoom-in;
+
+}
+
+.product-thumbnails {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.thumbnail-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+  filter: brightness(0.7);
+}
+
+.thumbnail-image.selected {
+  border: 2px solid #fff;
+  filter: brightness(1);
+}
+
+.product-details-content {
+  padding: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%; /* Ensure container fills grid cell height */
+}
+
+.product-name {
+  /* font-size: 2.2rem; */
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top:0;
+  /* color: #b8860b; */
+}
+
+.product-category {
+  /* font-size: 1.1rem; */
+  font-size: smaller;
+  color: #888;
+  /* margin-bottom: 20px; */
+}
+
+.product-page-container .product-price {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.option-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.color-button {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.color-button.selected {
+  border: 2px solid #b8860b;
+}
+
+.size-button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s, border-color 0.2s;
+  color: #333;
+}
+
+.size-button.selected {
+  background-color: #b8860b;
+  color: #fff;
+  border: 1px solid #b8860b;
+}
+
+.quantity-selector {
+  width: 60px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.product-page-container .add-to-cart-button {
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  /* background-color: #b8860b; */
+  /* background-color: var(--accent-color); */
+  border: none;
+  /* border-radius: 8px; */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-grow: 1;
+  width: 50%;
+  text-align: center;
+  margin:0 auto;
+}
+
+.product-page-container .add-to-cart-button:hover {
+  /* background-color: #555; */
+  /* background-color: var(--accent-2-color); */
+}
+
+.add-to-wishlist-button {
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+}
+
+.product-details-toggle {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  cursor: pointer;
+}
+
+.product-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.product-details-content-body {
+  margin-top: 0px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #666;
+}
+.product-details-content-body h2 {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+.add-to-wishlist-button {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #888;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.add-to-wishlist-button:hover {
+  transform: scale(1.2);
+  color: #e74c3c;
+}
+
+.add-to-wishlist-button.active {
+  color: #e74c3c; /* red when active */
+}
+.single-column-grid {
+  grid-template-columns: 1fr !important;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .product-display-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width:600px)
+{
+ 
+    .product-category {
+        font-size: 15px;
+        color: #888;
+        margin-bottom: 2px;
+        margin-top: 2px;
+        text-align: center;
+   }
+   .product-page-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    color: #333;
+    box-sizing: border-box;
+  }
+  .product-display-grid {
+   box-shadow:none;
+ }
+
+}
+
+.product-options-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* new css */
+/* minimal select styling (S1) */
+.quantity-select {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db; /* subtle neutral border */
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 14px;
+  appearance: auto; /* keep native look */
+  cursor: pointer;
+  min-width: 80px;
+}
+
+/* small responsive tweak so select doesn't push layout */
+.product-options-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.product-options-row .option-title {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+}
+
+/* adjust for small screens */
+@media (max-width: 600px) {
+  .product-options-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .quantity-select {
+    min-width: 64px;
+    font-size: 14px;
+  }
+}
+/* new css */
+
+/* new css - 2 */
+/* === Share popup & button styles === */
+
+.share-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Share icon button */
+.share-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  color: #333;
+  font-size: 1.8rem;
+}
+.share-btn:hover {
+  background: rgba(0,0,0,0.03);
+}
+
+/* popup (slide-up animation) - appears below icon, aligned right edge */
+.share-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 170px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(16,24,40,0.12);
+  border: 1px solid rgba(16,24,40,0.06);
+  z-index: 1400;
+  padding: 8px 6px;
+  transform-origin: top right;
+  animation: share-slide-up .16s cubic-bezier(.2,.9,.2,1);
+}
+
+/* slide up animation */
+@keyframes share-slide-up {
+  from { transform: translateY(8px) scale(.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.share-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.share-item i {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+.share-item:hover {
+  background: #f6f7fb;
+}
+
+/* small toast for copy/share feedback */
+.copied-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  z-index: 9999;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+/* Make sure product-options-row items don't wrap awkwardly */
+.product-options-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* tweak small screens to keep layout tidy */
+@media (max-width: 600px) {
+  .share-popup {
+    right: -6px;
+    left: auto;
+    min-width: 150px;
+  }
+  .share-wrapper { margin-left: 6px; }
+}
+/* new css - 2 */

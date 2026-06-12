@@ -1,0 +1,15 @@
+.checkbox-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-direction: row;
+}
+
+.checkbox-group input {
+  width: auto;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+    padding-top: 3px;
+}

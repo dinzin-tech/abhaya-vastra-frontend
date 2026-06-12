@@ -1,0 +1,49 @@
+.top-ribbon {
+  background-color: #111;
+  color: #fff;
+  font-size: 16px;
+  /* padding: 8px 7rem; */
+  padding: 0.5rem;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ribbon-content {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 auto;
+}
+
+.ribbon-text {
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.ribbon-socials {
+  display: flex;
+  gap: 15px;
+}
+
+.ribbon-socials a {
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.ribbon-socials a:hover {
+  color: #ffcc00; /* highlight color on hover */
+}
+
+.ribbon-socials svg {
+  width: 18px;
+  height: 18px;
+}

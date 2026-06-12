@@ -1,0 +1,61 @@
+.sliding-banner {
+  display: flex;
+  overflow: hidden;
+  cursor: grab;
+  width: 100%;
+}
+
+.banner-item {
+  flex: 0 0 100%; /* full width */
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  gap: 12px;
+  color: #fff;
+  font-weight: 600;
+  padding: 5px;
+  padding-top: 10px;
+  box-sizing: border-box;
+  /* background: #28a745; */
+  /* background: #caa8f5; */
+  /* background: #edf67d; */
+  /* background: linear-gradient(135deg, #edf67d, #f896d8, #ca7df9, #724cf9); */
+  /* background: #ca7df9; */
+  /* background: #4e148c; */
+  /* background: linear-gradient(135deg, #A1712F, #040605); */
+  background: linear-gradient(135deg, #651423, #040605);
+  /* background-color: #040605; */
+
+}
+
+.banner-item .product-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  /* color: #000; */
+}
+
+.banner-item .shop-now-link {
+  /* background: #fff; */
+  /* color: #28a745; */
+  /* padding: 6px 14px; */
+  /* border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s; */
+  color: #fff;
+  /* color: #000; */
+  font-size: 12px;
+}
+
+.shop-now:hover {
+  background: #e8f5e9;
+}
+
+@media (max-width: 531px) {
+
+  .banner-item {
+    margin-bottom: -15px;
+  }
+
+}

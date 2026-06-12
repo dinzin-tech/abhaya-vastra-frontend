@@ -1,0 +1,132 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: auto;
+  padding: 40px;
+}
+
+.auth-container .form-card {
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 514px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-form {
+  padding: 30px;
+}
+
+.auth-form h2 {
+  text-align: center;
+  /* color: #c88a0b; */
+  color: var(--accent-color);
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  color: #333;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  /* border-color: #c88a0b; */
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(200, 138, 11, 0.25);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  /* background-color: #c88a0b; */
+  background-color: var(--accent-color);
+  color: #fff;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  margin-top: 15px;
+  margin-bottom: 12px;
+}
+
+.submit-btn:hover {
+  background-color: #83673c;
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-text {
+  text-align: center;
+  font-size: 14px;
+  color: #c88a0b;
+  margin-top: 25px;
+}
+
+.toggle-text a {
+  color: #c88a0b;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.toggle-text a:hover {
+  text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .auth-form {
+    padding: 25px;
+  }
+  .auth-container
+  {
+    padding:0px;
+    /* background-color: #fff6df; */
+  }
+  .auth-container .form-card
+  {
+    /* background-color: #fff6df; */
+  }
+}

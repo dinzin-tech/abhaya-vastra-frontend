@@ -1,0 +1,344 @@
+.checkout-page {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  /* color: #b88637; */
+  /* color: #724cf9; */
+  color: var(--accent-color);
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+.form-card,
+.summary-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form-card h2,
+.summary-card h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  /* color: #b88637; */
+  /* color: #724cf9; */
+  color: var(--accent-2-color);
+}
+
+.form-card input,
+.form-card textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Coupon container */
+.coupon-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap; 
+  align-items: center;
+}
+
+.coupon-container input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  height: 45px;
+}
+
+.coupon-container .coupon-input {
+  margin-bottom: 0;
+}
+
+.form-card h3{
+    /* color:#b88637; */
+    /* color: #724cf9; */
+    color: var(--accent-2-color);
+}
+.coupon-container .apply-btn {
+      padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    /* background-color: #b88637; */
+    /* background-color: #724cf9; */
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
+    width: 108px;
+    margin-top:0;
+}
+
+.coupon-container .apply-btn:hover {
+  /* background: #8e6f0e; */
+  transform: scale(1.05);
+}
+
+/* Wallet & Points Section */
+.wallet-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf0 100%);
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+}
+
+.wallet-section h3 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.wallet-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+  padding: 0.8rem;
+  background: white;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.wallet-option:hover {
+  /* background: #f8f9ff; */
+  /* background-color: var(--accent-2-color); */
+  transform: translateX(5px);
+}
+
+.wallet-option input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  margin-top: 16px;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.wallet-option span {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.wallet-option strong {
+  color: #667eea;
+}
+
+.applied-text {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Place Order button */
+.place-order-btn {
+   width: 100%;
+    max-width: 145px;
+    margin: 1rem auto 0;
+    /* background-color: #b88637; */
+    /* background-color: #724cf9; */
+    background-color: var(--accent-color);
+    color: #fff;
+    font-weight: 700;
+    padding: 11px 12px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    display: block;
+}
+
+.place-order-btn:hover {
+  /* background-color: #996515; */
+  /* background-color: #564592; */
+  background-color: var(--accent-2-color);
+}
+
+/* Items list */
+.items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.item-image {
+  width: 53px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.item-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-weight: 600;
+  /* color: #b88637; */
+  color: #724cf9;
+  margin-bottom: 0.2rem;
+}
+
+.item-quantity,
+.item-price {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.order-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.summary-row.discount {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.summary-row.total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  /* color: #b88637; */
+  /* color: #724cf9; */
+  color: var(--accent-color);
+}
+
+.empty {
+  text-align: center;
+  color: #6b7280;
+}
+
+/* ✅ RESPONSIVE BREAKPOINTS */
+@media (max-width: 1024px) {
+  .checkout-grid {
+    grid-template-columns: 1fr; /* stack on smaller screens */
+  }
+  .ribbon-content {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 0.8rem;
+  }
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .form-card,
+  .summary-card {
+    padding: 1rem;
+  }
+  .item-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  
+  
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+  .form-card h2,
+  .summary-card h2 {
+    font-size: 1.2rem;
+  }
+  .summary-row {
+    font-size: 0.95rem;
+  }
+}
+
+/* loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(3px); /* optional but looks nice */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;  /* make sure it's on top of everything */
+}
+
+.loading-spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #c88a0b; /* your theme color */
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+  color: #fff;
+  font-size: 16px;
+}

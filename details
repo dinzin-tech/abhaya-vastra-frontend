@@ -1,0 +1,79 @@
+1 menu -> men , women , customization (highlight)
+2 After shop section show customized product in whihc have contact us button 
+3 First filter is customization (=>  disable all the filters and show all prodcuts with customizated products)
+4 second filter is male female 
+
+5 After the logo display the compnay name in footer
+
+
+slider, category filter ,best seller ,new arrival ,video section,footer section
+
+0ct 6 --------------------------------
+
+- login/register button in header --
+- reduce font size in nabvar & correct padding --
+- All Products (title) - alignment - match with filters section --
+- product tile - height 350px and no side empty spaces and no rounded corners --
+- show more reduce size center and add bg color matching to logo --
+- videos - (remove rating and reviews count - add rating, reviews in product tile) -- 
+- social buttons should come below top logo --
+- mobile responsive --
+
+
+oct 09 -------------------------------
+
+- add to cart btn color - same as login gradient --
+- size dropdown for each products (price changes based on size) --
+- size dropdown in filters --
+- reset button in filters --
+- top banner - center text(padding top) --
+- second banner increase size (height only) --
+- * search bar pop up - title (max 2 lines & wrap title text) --
+- show more - reduce size and make squre box and change color --
+- * video shorts - center title, remove side black space  --
+- reviews slider and customer pics slider 1x1 (below reviews slider section) - https://maayajewellery.com/product-category/bridal-bangles/ --
+- * all products page +1 --
+- * make all round corners as square (remove border-radius) ***********
+- * make social media buttons smaller below LOGO --
+- * terms, policy pages - change color -- 
+
+
+
+
+
+---------- oct 18
+- align social icons - date not required, whstapp icon needed *--
+- filters - reset - bg color - black --
+- social icons in footer, align right --
+- footer add stripe --
+- add to cart background color - too bright - change theme color --
+- no of products based on screen size - allproducts, bestsellers, new arrivals etc sections -- 
+- All Products and sort by - 1. font size for all products & sort by align with filters btn - in mobile view --
+- search icon in in mobile view search bar popup --
+- order summary adjust image size --
+- product page heart icon after qty - size make sure it working --
+- pagination in all the pages all products, best sellers, new arrivals etc --
+
+----------- pending ----
+- register page - address
+
+- 2 UI screens
+    - wallet page, user can add money/points to wallet, integrate razorpay to add money to wallet
+    - can pay with wallet
+    - coupon ui
+
+-- oct 25
+  - overlay after payment - checkout page
+  - share button in product page - fb, insta
+  - section header, filter btn, sort in one row
+  - add to cart, whishlist, qty - same row
+  - qty - 6, 12 - dropdown - product page
+  - collection - remove --
+  - social links - remove - X --
+  - shop now color change to gradient
+  - register page - address
+
+- 2 UI screens
+    - wallet page, user can add money/points to wallet, integrate razorpay to add money to wallet
+    - can pay with wallet
+    - coupon ui
