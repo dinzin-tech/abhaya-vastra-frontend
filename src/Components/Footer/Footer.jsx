@@ -1,6 +1,6 @@
 import React from "react";
 // import footerlogo from "../../assets/logo1.png";
-import footerlogo from "../../assets/logo-preview.png";
+import footerlogo from "../../assets/logo.png";
 import "./Footer.css";
 import { NavLink } from "react-router-dom";
 import SocialLinks from "../HomePage/SocialLinks";

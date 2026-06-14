@@ -6,7 +6,7 @@ import Searchbar from "./Searchbar";
 import ProfileDropdown from "./ProfileDropdown";
 import CartSidebar from "./CartSidebar";
 import WalletModal from "../Wallet/WalletModal";
-import logo from "../../assets/logo-preview.png";
+import logo from "../../assets/logo.png";
 import { CartContext } from "../../context/CartContext";
 import { WishlistContext } from "../../context/WishlistContext";
 import { AuthContext } from "../../context/AuthContext";
