@@ -84,7 +84,7 @@ const Header = () => {
         <div className="logo-section">
           <Link to="/" className="logo-link">
             <img src={logo} alt="MyShop Logo" className="logo-image" />
-            {/* <h1 className="logo-text">The Saayal</h1> */}
+            {/* <h1 className="logo-text">Abhaya Vastra</h1> */}
           </Link>
           {/* <SocialLinks className="small" /> */}
         </div>

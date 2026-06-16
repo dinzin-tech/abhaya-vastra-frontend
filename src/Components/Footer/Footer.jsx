@@ -11,11 +11,11 @@ const Footer = () => (
       <div className="footer-container">
         {/* Logo, Name, and Description Column */}
         <div className="logo-column">
-          <a href="/" aria-label="The Saayal Logo">
-            <img src={footerlogo} className="footerlogo" alt="The Saayal" />
-            {/* <h1>The Saayal</h1> */}
+          <a href="/" aria-label="Abhaya Vastra Logo">
+            <img src={footerlogo} className="footerlogo" alt="Abhaya Vastra" />
+            {/* <h1>Abhaya Vastra</h1> */}
           </a>
-          {/* <p className="company-name">The Saayal</p> */}
+          {/* <p className="company-name">Abhaya Vastra</p> */}
           <p className="description">
             We are a premium online clothing store dedicated to providing the
             latest trends and highest quality apparel.
@@ -81,7 +81,7 @@ const Footer = () => (
 
       {/* Copyright Section */}
       <div className="copyright">
-        &copy; 2025 The Saayal. All Rights Reserved. 
+        &copy; 2025 Abhaya Vastra. All Rights Reserved. 
         {/* Powered by Razorpay. */}
       </div>
     </footer>
