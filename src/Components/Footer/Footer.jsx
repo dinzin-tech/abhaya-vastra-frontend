@@ -81,8 +81,9 @@ const Footer = () => (
 
       {/* Copyright Section */}
       <div className="copyright">
-        &copy; 2025 Abhaya Vastra. All Rights Reserved. 
+        &copy; 2026 Abhaya Vastra. All Rights Reserved. 
         {/* Powered by Razorpay. */}
+        <span className="dev-credit">developed & maintained by <strong>DINZIN</strong></span>
       </div>
     </footer>
   </>

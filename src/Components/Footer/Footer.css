@@ -177,3 +177,18 @@
     justify-content: center;
   }
 }
+
+.dev-credit {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  opacity: 0.55;
+  margin-top: 0.2rem;
+  text-transform: uppercase;
+}
+
+.dev-credit strong {
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+
