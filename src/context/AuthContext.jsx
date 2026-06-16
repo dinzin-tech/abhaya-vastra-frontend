@@ -57,16 +57,16 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Fetch user data using the API instance
-          console.log('Fetching user data...');
+          // console.log('Fetching user data...');
           const response = await API.get('/user');
-          console.log('User data fetched:', response.data);
+          // console.log('User data fetched:', response.data);
           setUser(response.data);
           setToken(token); // Make sure token is set in state
         } catch (error) {
           console.error('Authentication check failed:', error);
           // If the token is invalid, clear it
           if (error.response && error.response.status === 401) {
-            console.log('Invalid token, removing from storage');
+            // console.log('Invalid token, removing from storage');
             localStorage.removeItem('authToken');
           }
         }
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 
   // Login function
   const login = useCallback(async (data) => {
-    console.log('Login data received:', data);
+    // console.log('Login data received:', data);
     const { access_token, user: userData } = data;
     
     if (!access_token || !userData) {
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Save token to localStorage
       localStorage.setItem('authToken', access_token);
-      console.log('Token saved to localStorage');
+      // console.log('Token saved to localStorage');
       
       // Set user data in state
       setUser(userData);
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
       // Set default authorization header for future requests
       API.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
       
-      console.log('User state updated:', { user: userData, token: access_token });
+      // console.log('User state updated:', { user: userData, token: access_token });
       return true;
     } catch (error) {
       console.error('Error during login:', error);
@@ -152,11 +152,7 @@ export const AuthProvider = ({ children }) => {
 
   // Debug effect to log auth state changes
   React.useEffect(() => {
-    console.log('Auth state updated:', { 
-      user, 
-      hasToken: !!token,
-      isLoggedIn: authValue.isLoggedIn 
-    });
+    console.log('Auth state updated');
   }, [user, token, authValue.isLoggedIn]);
 
   const value = {
