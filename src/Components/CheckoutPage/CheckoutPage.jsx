@@ -231,6 +231,63 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     }
   };
 
+  // ── TEMPORARY: WhatsApp order redirect ──────────────────────────────────────
+  const WHATSAPP_MODE = true; // set false to restore normal Razorpay flow
+  const WA_NUMBER = "918217013567";
+
+  const buildWhatsAppURL = () => {
+    const itemLines = cartItems
+      .map(
+        (item) =>
+          `  • ${item.name}${
+            item.selectedSize ? ` (${item.selectedSize})` : ""
+          }${
+            item.selectedColor ? ` [${item.selectedColor}]` : ""
+          } x${item.quantity} — ₹${(item.price * item.quantity).toFixed(2)}`
+      )
+      .join("\n");
+
+    const lines = [
+      "*New Order — Abhaya Vastra*",
+      "",
+      "*Customer Details*",
+      `Name: ${formData.name}`,
+      `Phone: ${formData.phone}`,
+      `Email: ${formData.email}`,
+      "",
+      "*Shipping Address*",
+      `${formData.address}, ${formData.city}, ${formData.state} — ${formData.zip}`,
+      "",
+      "*Order Items*",
+      itemLines,
+      "",
+      "*Price Breakdown*",
+      `Subtotal: ₹${subtotal.toFixed(2)}`,
+      discount > 0 ? `Coupon Discount: -₹${discount.toFixed(2)}` : null,
+      walletMoneyToUse > 0 ? `Wallet: -₹${walletMoneyToUse.toFixed(2)}` : null,
+      pointsToUse > 0 ? `Loyalty Points (${pointsToUse}): -₹${pointsDiscount.toFixed(2)}` : null,
+      `Shipping: ₹${shippingCharge.toFixed(2)}`,
+      `*Total: ₹${total.toFixed(2)}*`,
+    ]
+      .filter((l) => l !== null)
+      .join("\n");
+
+    return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(lines)}`;
+  };
+
+  const handleWhatsAppOrder = () => {
+    if (cartItems.length === 0) {
+      toast.warning("Your cart is empty.");
+      return;
+    }
+    if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.zip) {
+      toast.error("Please fill all required fields.");
+      return;
+    }
+    window.open(buildWhatsAppURL(), "_blank");
+  };
+  // ─────────────────────────────────────────────────────────────────────────────
+
   const handlePlaceOrder = async () => {
     if (cartItems.length === 0) {
       toast.warning("Your cart is empty. Add items before placing an order.");
@@ -554,9 +611,16 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
           </div>
           */}
 
-          <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading}>
-            {loading ? "Processing..." : "Place Order"}
-          </button>
+          {WHATSAPP_MODE ? (
+            <button className="whatsapp-order-btn" onClick={handleWhatsAppOrder}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.85L0 24l6.335-1.505A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.034-1.388l-.36-.214-3.762.894.953-3.67-.235-.376A9.783 9.783 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+              Order via WhatsApp
+            </button>
+          ) : (
+            <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading}>
+              {loading ? "Processing..." : "Place Order"}
+            </button>
+          )}
         </div>
 
         <div className="summary-card">
