@@ -193,7 +193,10 @@ const SlidingBanner = ({ products = [] }) => {
   useEffect(() => {
     startAutoSlide();
     return () => clearInterval(intervalRef.current);
-  }, [products]);
+  }, [products = [
+    { id: 1, name: "🌟 Welcome to Abhaya Vastra – Discover Fashion That Inspires" },
+    { id: 2, name: "🎉 We're Officially Open! Explore Our New Collection" }]
+     ]);
 
   return (
     <div
@@ -209,9 +212,9 @@ const SlidingBanner = ({ products = [] }) => {
       {products.map((product) => (
         <div key={product.id} className="banner-item">
           <span className="product-name">{product.name}</span>
-          <Link to={`/product/${product.id}`} className="shop-now-link">
+          {/* <Link to={`/product/${product.id}`} className="shop-now-link">
             Shop Now
-          </Link>
+          </Link> */}
         </div>
       ))}
     </div>
