@@ -57,7 +57,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     try {
       // First, get the pickup pincode from the backend
       const configResponse = await API.get('/config');
-      const pickupPincode = configResponse?.data?.pickup_pincode || '110001'; // Default to Delhi pincode if not set
+      const pickupPincode = configResponse?.data?.pickup_pincode || '560064'; // Default to Delhi pincode if not set
       
       const response = await API.post('/shiprocket/check-serviceability', {
         pickup_pincode: pickupPincode,
