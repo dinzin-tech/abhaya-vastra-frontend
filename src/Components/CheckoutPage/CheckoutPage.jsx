@@ -232,7 +232,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
   };
 
   // ── TEMPORARY: WhatsApp order redirect ──────────────────────────────────────
-  const WHATSAPP_MODE = true; // set false to restore normal Razorpay flow
+  const WHATSAPP_MODE = false; // set false to restore normal Razorpay flow
   const WA_NUMBER = "918217013567";
 
   const buildWhatsAppURL = () => {
