@@ -359,7 +359,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
         }
 
         // Proceed with Razorpay payment
-        await handleRazorpayPayment(order, newUserToken);
+        await handleRazorpayPayment(order, newUserToken, sessionId);
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -370,7 +370,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     }
   };
 
-  const handleRazorpayPayment = async (order, newUserToken) => {
+  const handleRazorpayPayment = async (order, newUserToken, guestSessionId) => {
     try {
       const razorpayResponse = await API.post("/razorpay/create-order", {
         order_id: order.id,
@@ -391,6 +391,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
+                session_id: guestSessionId,
               });
 
               if (verifyResponse.data.success) {
