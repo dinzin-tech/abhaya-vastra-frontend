@@ -22,7 +22,7 @@ const GalleryWithLightbox = ({ autoSlideInterval = 3000 }) => {
   useEffect(() => {
     API.get("/gallery")
       .then((res) => {
-        const baseUrl = "http://127.0.0.1:8000/storage/"; // adjust if needed
+        const baseUrl = import.meta.env.VITE_STORAGE_BASE_URL || "http://127.0.0.1:8000/storage/"; // adjust if needed
         const formattedImages = res.data.map((item) => baseUrl + item.image);
         setImages(formattedImages);
       })

@@ -574,6 +574,16 @@ const ProductPage = () => {
   const [showShare, setShowShare] = useState(false);
   const [copiedMsg, setCopiedMsg] = useState("");
   const shareRef = useRef(null);
+
+  // === Reviews States ===
+  const [isEligible, setIsEligible] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [newComment, setNewComment] = useState("");
+  const [reviewImage, setReviewImage] = useState(null);
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
   // ===================
 
   const [selectedColor, setSelectedColor] = useState("");
@@ -667,6 +677,116 @@ const ProductPage = () => {
     };
     fetchProductDetails();
   }, [name, customizableFromState]);
+
+  // === Reviews Eligibility & Form Handlers ===
+  useEffect(() => {
+    const checkEligibility = async () => {
+      if (!product?.id) return;
+      try {
+        const token = localStorage.getItem("authToken");
+        if (!token) return;
+        const res = await API.get(`/products/${product.id}/review-eligibility`);
+        setIsEligible(res.data.eligible);
+      } catch (err) {
+        console.error("Error checking review eligibility:", err);
+      }
+    };
+    checkEligibility();
+  }, [product]);
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size <= 500 * 1024) {
+      setReviewImage(file);
+      setImagePreview(URL.createObjectURL(file));
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        const MAX_DIM = 1200;
+        if (width > MAX_DIM || height > MAX_DIM) {
+          const ratio = Math.min(MAX_DIM / width, MAX_DIM / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        let q = 0.85;
+        const tryCompress = () => {
+          canvas.toBlob((blob) => {
+            if (blob.size <= 500 * 1024 || q <= 0.2) {
+              const compressed = new File([blob], file.name, { type: "image/jpeg" });
+              setReviewImage(compressed);
+              setImagePreview(URL.createObjectURL(compressed));
+            } else {
+              q -= 0.1;
+              tryCompress();
+            }
+          }, "image/jpeg", q);
+        };
+        tryCompress();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) {
+      setSubmitError("Please write a comment.");
+      return;
+    }
+
+    setSubmittingReview(true);
+    setSubmitError("");
+    setSubmitSuccess("");
+
+    try {
+      const formData = new FormData();
+      formData.append("rating", newRating);
+      formData.append("review", newComment);
+      if (reviewImage) {
+        formData.append("image", reviewImage);
+      }
+
+      const res = await API.post(`/products/${product.id}/reviews`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.data.success) {
+        setSubmitSuccess("Review submitted successfully!");
+        setNewComment("");
+        setReviewImage(null);
+        setImagePreview(null);
+        setIsEligible(false); // Disable form
+
+        // Prepend review to product's reviews
+        setProduct((prev) => ({
+          ...prev,
+          reviews: [res.data.data, ...(prev.reviews || [])],
+        }));
+      } else {
+        setSubmitError(res.data.message || "Failed to submit review.");
+      }
+    } catch (err) {
+      setSubmitError(
+        err.response?.data?.message || "An error occurred while submitting."
+      );
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   // === Share feature logic ===
   useEffect(() => {
@@ -803,10 +923,28 @@ const ProductPage = () => {
         <div className="product-details-content">
           <h1 className="product-name">{product.name}</h1>
 
+          <div className="product-price-container">
+            {product.discount > 0 ? (
+              <>
+                <p className="product-price original-price-line">
+                  ₹ {Math.round(currentPrice)}
+                </p>
+                <p className="product-price discounted-price-main">
+                  ₹ {Math.round(currentDiscountedPrice)}
+                </p>
+                <span className="discount-badge-detail">
+                  {Math.round(product.discount)}% OFF
+                </span>
+              </>
+            ) : (
+              <p className="product-price">
+                ₹ {Math.round(currentDiscountedPrice || currentPrice)}
+              </p>
+            )}
+          </div>
+
           {!isCustomizable && (
               <>
-                <p className="product-price">Rs. {product.price}</p>
-
                 {product.colors && (
                   <>
                     <p className="option-title">Color:</p>
@@ -843,26 +981,6 @@ const ProductPage = () => {
                 )}
               </>
           )}
-
-          <div className="product-price-container">
-            {product.discount > 0 ? (
-              <>
-                <p className="product-price original-price-line">
-                  ₹ {Math.round(currentPrice)}
-                </p>
-                <p className="product-price discounted-price-main">
-                  ₹ {Math.round(currentDiscountedPrice)}
-                </p>
-                <span className="discount-badge-detail">
-                  {Math.round(product.discount)}% OFF
-                </span>
-              </>
-            ) : (
-              <p className="product-price">
-                ₹ {Math.round(currentDiscountedPrice || currentPrice)}
-              </p>
-            )}
-          </div>
 
           {/* === Buttons Row === */}
           <div className="product-options-row">
@@ -961,12 +1079,149 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {copiedMsg && <div className="copied-toast">{copiedMsg}</div>}
+      {/* === Reviews Section === */}
+      {!isCustomizable && (
+        <div className="product-reviews-container">
+          <h2 className="reviews-section-title">Customer Reviews</h2>
+          
+          <div className="reviews-layout-grid">
+            {/* Reviews Summary Card */}
+            <div className="reviews-summary-card">
+              <div className="rating-avg-score">
+                {product.reviews && product.reviews.length > 0
+                  ? (product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length).toFixed(1)
+                  : "0.0"}
+              </div>
+              <div className="rating-avg-stars">
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const avg = product.reviews && product.reviews.length > 0
+                    ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
+                    : 0;
+                  return (
+                    <i
+                      key={i}
+                      className={`fa-solid fa-star ${i < Math.round(avg) ? "star-active" : "star-inactive"}`}
+                    />
+                  );
+                })}
+              </div>
+              <div className="rating-summary-text">
+                Based on {product.reviews?.length || 0} reviews
+              </div>
+            </div>
+
+            {/* Reviews list */}
+            <div className="reviews-list-box">
+              {product.reviews && product.reviews.length > 0 ? (
+                product.reviews.map((rev) => (
+                  <div key={rev.id} className="review-item-card">
+                    <div className="review-item-header">
+                      <div className="reviewer-profile">
+                        <div className="reviewer-avatar">
+                          <span>{rev.name ? rev.name.charAt(0).toUpperCase() : "U"}</span>
+                        </div>
+                        <div className="reviewer-meta">
+                          <span className="reviewer-name">{rev.name}</span>
+                          <div className="reviewer-rating-stars">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <i
+                                key={i}
+                                className={`fa-solid fa-star ${i < rev.rating ? "star-active" : "star-inactive"}`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="review-timestamp">
+                        {rev.created_at ? new Date(rev.created_at).toLocaleDateString() : ""}
+                      </span>
+                    </div>
+                    <p className="review-comment-text">{rev.review}</p>
+                    {rev.image && (
+                      <div className="review-attached-photo">
+                        <img 
+                          src={rev.image.startsWith("http") ? rev.image : `${API.defaults.baseURL.replace("/api", "")}/storage/${rev.image}`} 
+                          alt="Review attachment" 
+                          onClick={() => window.open(rev.image.startsWith("http") ? rev.image : `${API.defaults.baseURL.replace("/api", "")}/storage/${rev.image}`, '_blank')}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="no-reviews-box">
+                  <p>No reviews yet for this product. Be the first to share your experience!</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Write a Review Block */}
+          {isEligible && (
+            <div className="write-review-wrapper">
+              <h3>Write a Review</h3>
+              <p className="write-review-intro">Share your rating and thoughts with other customers.</p>
+              
+              {submitError && <div className="review-alert error">{submitError}</div>}
+              {submitSuccess && <div className="review-alert success">{submitSuccess}</div>}
+
+              <form onSubmit={handleSubmitReview} className="write-review-form">
+                <div className="write-form-group">
+                  <label>Overall Rating</label>
+                  <div className="rating-selector-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        className={`star-select-button ${newRating >= star ? "active" : ""}`}
+                        onClick={() => setNewRating(star)}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="write-form-group">
+                  <label htmlFor="review_input">Review Message</label>
+                  <textarea
+                    id="review_input"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write your review comments here..."
+                    required
+                  />
+                </div>
+
+                <div className="write-form-group">
+                  <label>Add Photo (Optional)</label>
+                  <div className="review-photo-selector">
+                    <input type="file" accept="image/*" onChange={handleImageChange} />
+                    <div className="selector-prompt">
+                      <span>📷 Select Image</span>
+                    </div>
+                  </div>
+                  {imagePreview && (
+                    <div className="review-image-preview-container">
+                      <img src={imagePreview} alt="Preview" />
+                      <button type="button" className="remove-preview-image" onClick={() => { setReviewImage(null); setImagePreview(null); }}>✕</button>
+                    </div>
+                  )}
+                </div>
+
+                <button type="submit" disabled={submittingReview} className="submit-review-btn">
+                  {submittingReview ? "Submitting..." : "Submit Review"}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      )}
     </div>
-    
-    </>
-    
-  );
+
+    {copiedMsg && <div className="copied-toast">{copiedMsg}</div>}
+  </>
+);
 };
 
 export default ProductPage;

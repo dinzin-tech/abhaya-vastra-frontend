@@ -70,7 +70,7 @@ const FilterSidebar = ({
                 {`Searching "${filters?.searchQuery || ""}"`}
               </h5>
             ) : 
-            <h1>{props && props.headingText ? props.headingText : headingText}</h1> }
+            <h1>{props && props.headingText ? props.headingText : "Filters"}</h1> }
           </div>
 
           {/* Mobile Sort - shown on mobile, hidden on desktop */}

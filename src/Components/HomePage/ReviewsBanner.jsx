@@ -10,7 +10,7 @@ const ReviewsBanner = () => {
   const [offsetX, setOffsetX] = useState(0);
   const wrapperRef = useRef(null);
 
-  const IMAGE_BASE_URL = "http://127.0.0.1:8000/storage/";
+  const IMAGE_BASE_URL = import.meta.env.VITE_STORAGE_BASE_URL || "http://127.0.0.1:8000/storage/";
 
   // ✅ Fetch reviews from API
   useEffect(() => {

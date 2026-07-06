@@ -24,7 +24,7 @@ import SignupPage from "./Components/SignupPage/SignupPage";
 import ProductPage from "./Components/ProductPage/ProductPage";
 import WishlistProvider from "./context/WishlistContext";
 import WishlistPage from "./Components/WishlistPage/WishlistPage";
-import ProfilePage from "./Components/ProfilePage/ProfilePage.";
+import ProfilePage from "./Components/ProfilePage/ProfilePage";
 import BestSellerPage from "./Components/BestSellerPage/BestSellerPage";
 import WhatsNewPage from "./Components/WhatsNewPage/WhatsNewPage";
 import FeaturedProductPage from "./Components/FeaturedProductPage/FeaturedProductPage";
