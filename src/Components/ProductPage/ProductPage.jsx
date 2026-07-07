@@ -1013,14 +1013,7 @@ const ProductPage = () => {
 
             <button
               onClick={handleWishlistClick}
-              className="wishlist-button"
-              style={{
-                background: "none",
-                border: "none",
-                fontSize: "1.8rem",
-                cursor: "pointer",
-                color: isInWishlist(product.id) ? "red" : "gray",
-              }}
+              className={`wishlist-button ${isInWishlist(product.id) ? "active" : ""}`}
             >
               ❤
             </button>

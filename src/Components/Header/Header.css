@@ -673,37 +673,58 @@ button.dropdown-link.signout-link {
 
 @media (max-width: 1023px) {
   .nav-container {
-    justify-content: center; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
     position: relative;
   }
 
   .mobile-menu-button {
-    position: absolute;
-    left: 1rem; 
+    position: static;
+    order: 1;
+    margin-right: 0.5rem;
+    padding: 0.25rem;
+  }
+
+  .logo-section {
+    order: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .logo-image {
+    height: 2.2rem;
   }
 
   .icon-group {
-    position: absolute;
-    right: 1rem; 
+    position: static;
+    order: 3;
+    min-width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex-grow: 1;
   }
 
   .logo-link {
-    margin: 0; /* Remove margin for center alignment */
     display: flex;
-    justify-content: center;
-    flex-grow: 1;
+    align-items: center;
+    margin: 0;
   }
 }
 
 @media (max-width: 600px) {
   .icon-group {
-    gap: 0px !important;
+    gap: 8px !important;
   }
 }
 
 @media (max-width: 450px) {
   .icon-group {
-    gap: 0px !important;
+    gap: 6px !important;
   }
   
   .icon-button {

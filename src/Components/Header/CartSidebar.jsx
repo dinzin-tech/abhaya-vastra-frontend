@@ -233,6 +233,34 @@ const CartSidebar = () => {
             /*background-color: #564592;*/
             background-color: var(--accent-2-color);
           }
+
+          @media (max-width: 480px) {
+            .cart-sidebar {
+              max-width: 100%;
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+            .item-image {
+              width: 70px;
+              height: 70px;
+            }
+            .item-name {
+              font-size: 0.9rem;
+            }
+            .item-price {
+              font-size: 0.8rem;
+            }
+            .cart-item {
+              gap: 0.5rem;
+            }
+            .quantity-button {
+              width: 28px;
+              height: 28px;
+            }
+            .quantity-display {
+              width: 20px;
+            }
+          }
         `}
       </style>
 
