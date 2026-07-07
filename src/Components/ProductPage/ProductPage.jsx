@@ -594,6 +594,8 @@ const ProductPage = () => {
   const [currentDiscountedPrice, setCurrentDiscountedPrice] = useState(0);
 
   const [productDetailsOpen, setProductDetailsOpen] = useState(true);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loadingRelated, setLoadingRelated] = useState(false);
   const [zoomState, setZoomState] = useState({
     isZoomed: false,
     transformOrigin: "50% 50%",
@@ -645,6 +647,21 @@ const ProductPage = () => {
     }
   }, [selectedSize, selectedColor, product]);
 
+  const fetchRelatedProducts = async (categoryName, currentProductId) => {
+    try {
+      setLoadingRelated(true);
+      const res = await API.get(`/products-by-category?category_name=${categoryName}`);
+      if (res.data.success && Array.isArray(res.data.data)) {
+        const filtered = res.data.data.filter((p) => p.id !== currentProductId);
+        setRelatedProducts(filtered.slice(0, 4));
+      }
+    } catch (err) {
+      console.error("Error fetching related products:", err);
+    } finally {
+      setLoadingRelated(false);
+    }
+  };
+
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -666,6 +683,9 @@ const ProductPage = () => {
               fetchedData.multipleImages?.[0] ||
               ""
           );
+          if (fetchedData.category) {
+            fetchRelatedProducts(fetchedData.category, fetchedData.id);
+          }
         } else {
           setError("Failed to fetch product details");
         }
@@ -1125,9 +1145,6 @@ const ProductPage = () => {
                           </div>
                         </div>
                       </div>
-                      <span className="review-timestamp">
-                        {rev.created_at ? new Date(rev.created_at).toLocaleDateString() : ""}
-                      </span>
                     </div>
                     <p className="review-comment-text">{rev.review}</p>
                     {rev.image && (
@@ -1208,6 +1225,41 @@ const ProductPage = () => {
               </form>
             </div>
           )}
+        </div>
+      )}
+
+      {/* === Recommended Products Section === */}
+      {relatedProducts.length > 0 && (
+        <div className="recommended-products-container">
+          <h2 className="recommended-section-title">You May Also Like</h2>
+          <div className="recommended-products-grid">
+            {relatedProducts.map((p) => {
+              const productUrl = `/product/${p.slug || p.name.toLowerCase().replace(/\s+/g, '-')}`;
+              return (
+                <Link
+                  key={p.id}
+                  to={productUrl}
+                  state={{ id: p.id, customizable: p.customizable }}
+                  className="recommended-product-card"
+                  onClick={() => window.scrollTo(0, 0)}
+                >
+                  <div className="recommended-img-wrapper">
+                    <img src={p.image} alt={p.name} className="recommended-product-img" />
+                    {p.hoverImage && (
+                      <img src={p.hoverImage} alt={p.name} className="recommended-product-img hover-img" />
+                    )}
+                  </div>
+                  <div className="recommended-product-info">
+                    <span className="recommended-category">{p.category}</span>
+                    <h4 className="recommended-product-name">{p.name}</h4>
+                    <div className="recommended-price-row">
+                      <span className="recommended-price">₹{parseFloat(p.total_price || p.price).toFixed(0)}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

@@ -1,83 +1,125 @@
 import React from "react";
 import "./TrackingModal.css";
 
-const TrackingModal = ({ isOpen, onClose, trackingData, loading, error }) => {
+const TrackingModal = ({ isOpen, onClose, trackingData, loading, error, order }) => {
   if (!isOpen) return null;
 
+  const td = trackingData?.tracking_data;
+
   return (
-    <div className="tracking-modal-overlay" onClick={onClose}>
-      <div className="tracking-modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="tracking-modal-header">
-          <h2>Track Your Order</h2>
-          <button className="tracking-modal-close" onClick={onClose}>
-            ×
+    <div className="tmodal-overlay" onClick={onClose}>
+      <div className="tmodal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="tmodal-header">
+          <div className="tmodal-header-left">
+            <div className="tmodal-icon">🚚</div>
+            <div>
+              <h2 className="tmodal-title">Track Order</h2>
+              {order?.order_number && (
+                <p className="tmodal-subtitle">#{order.order_number}</p>
+              )}
+            </div>
+          </div>
+          <button className="tmodal-close" onClick={onClose} aria-label="Close">
+            ✕
           </button>
         </div>
 
-        <div className="tracking-modal-body">
+        {/* Body */}
+        <div className="tmodal-body">
+          {/* Loading */}
           {loading && (
-            <div className="tracking-loading">
-              <p>Fetching tracking information...</p>
+            <div className="tmodal-loading">
+              <div className="tmodal-spinner" />
+              <p>Fetching live tracking info...</p>
             </div>
           )}
 
-          {error && (
-            <div className="tracking-error">
-              <p>{error}</p>
+          {/* Error */}
+          {!loading && error && (
+            <div className="tmodal-error">
+              <div className="tmodal-error-icon">⚠️</div>
+              <p className="tmodal-error-text">{error}</p>
+              <p className="tmodal-error-hint">
+                Tracking info will be available once your order is shipped.
+              </p>
             </div>
           )}
 
-          {!loading && !error && trackingData && (
-            <div className="tracking-details">
-              {/* Shipment Info */}
-              {trackingData.tracking_data && (
-                <div className="tracking-section">
-                  <h3>Shipment Information</h3>
-                  <div className="tracking-info-grid">
-                    <div className="tracking-info-item">
-                      <span className="tracking-label">AWB Code:</span>
-                      <span className="tracking-value">{trackingData.tracking_data.awb_code || "N/A"}</span>
-                    </div>
-                    <div className="tracking-info-item">
-                      <span className="tracking-label">Courier:</span>
-                      <span className="tracking-value">{trackingData.tracking_data.courier_name || "N/A"}</span>
-                    </div>
-                    <div className="tracking-info-item">
-                      <span className="tracking-label">Current Status:</span>
-                      <span className="tracking-value tracking-status">
-                        {trackingData.tracking_data.shipment_status || "Processing"}
-                      </span>
-                    </div>
-                    <div className="tracking-info-item">
-                      <span className="tracking-label">Expected Delivery:</span>
-                      <span className="tracking-value">
-                        {trackingData.tracking_data.edd || "Calculating..."}
-                      </span>
-                    </div>
+          {/* No data */}
+          {!loading && !error && !td && (
+            <div className="tmodal-nodata">
+              <div className="tmodal-nodata-icon">📦</div>
+              <p className="tmodal-nodata-title">No Tracking Info Yet</p>
+              <p className="tmodal-nodata-hint">
+                Your order is being packed. Tracking will be available once
+                your shipment is picked up by the courier.
+              </p>
+            </div>
+          )}
+
+          {/* Tracking data */}
+          {!loading && !error && td && (
+            <div className="tmodal-details">
+              {/* Shipment info cards */}
+              <div className="tmodal-info-grid">
+                {td.awb_code && (
+                  <div className="tmodal-info-card">
+                    <span className="tinfo-label">AWB Code</span>
+                    <span className="tinfo-value mono">{td.awb_code}</span>
                   </div>
-                </div>
-              )}
+                )}
+                {td.courier_name && (
+                  <div className="tmodal-info-card">
+                    <span className="tinfo-label">Courier</span>
+                    <span className="tinfo-value">{td.courier_name}</span>
+                  </div>
+                )}
+                {td.shipment_status && (
+                  <div className="tmodal-info-card tinfo-status-card">
+                    <span className="tinfo-label">Current Status</span>
+                    <span className="tinfo-status-value">{td.shipment_status}</span>
+                  </div>
+                )}
+                {td.edd && (
+                  <div className="tmodal-info-card">
+                    <span className="tinfo-label">Expected Delivery</span>
+                    <span className="tinfo-value">{td.edd}</span>
+                  </div>
+                )}
+              </div>
 
-              {/* Tracking History */}
-              {trackingData.tracking_data?.shipment_track && trackingData.tracking_data.shipment_track.length > 0 && (
-                <div className="tracking-section">
-                  <h3>Tracking History</h3>
-                  <div className="tracking-timeline">
-                    {trackingData.tracking_data.shipment_track.map((track, index) => (
-                      <div key={index} className="tracking-timeline-item">
-                        <div className="tracking-timeline-dot"></div>
-                        <div className="tracking-timeline-content">
-                          <p className="tracking-timeline-status">{track.current_status}</p>
-                          <p className="tracking-timeline-date">
-                            {track.date} - {track.time || ""}
+              {/* Timeline */}
+              {td.shipment_track && td.shipment_track.length > 0 && (
+                <div className="tmodal-timeline-section">
+                  <h3 className="tmodal-section-title">Tracking History</h3>
+                  <div className="tmodal-timeline">
+                    {td.shipment_track.map((track, index) => (
+                      <div
+                        key={index}
+                        className={`tmodal-timeline-item ${index === 0 ? "latest" : ""}`}
+                      >
+                        <div className="timeline-left">
+                          <div className="timeline-dot">
+                            {index === 0 && <span className="timeline-pulse" />}
+                          </div>
+                          {index < td.shipment_track.length - 1 && (
+                            <div className="timeline-connector" />
+                          )}
+                        </div>
+                        <div className="timeline-content">
+                          <p className="timeline-status">{track.current_status}</p>
+                          <p className="timeline-date">
+                            {track.date}
+                            {track.time ? ` · ${track.time}` : ""}
                           </p>
                           {track.location && (
-                            <p className="tracking-timeline-location">
+                            <p className="timeline-location">
                               📍 {track.location}
                             </p>
                           )}
                           {track.activities && (
-                            <p className="tracking-timeline-activity">{track.activities}</p>
+                            <p className="timeline-activity">{track.activities}</p>
                           )}
                         </div>
                       </div>
@@ -85,20 +127,13 @@ const TrackingModal = ({ isOpen, onClose, trackingData, loading, error }) => {
                   </div>
                 </div>
               )}
-
-              {/* No tracking data available */}
-              {!trackingData.tracking_data && (
-                <div className="tracking-no-data">
-                  <p>No tracking information available yet.</p>
-                  <p>Your order is being processed. Tracking will be available once the shipment is picked up.</p>
-                </div>
-              )}
             </div>
           )}
         </div>
 
-        <div className="tracking-modal-footer">
-          <button className="tracking-close-btn" onClick={onClose}>
+        {/* Footer */}
+        <div className="tmodal-footer">
+          <button className="tmodal-close-btn" onClick={onClose}>
             Close
           </button>
         </div>

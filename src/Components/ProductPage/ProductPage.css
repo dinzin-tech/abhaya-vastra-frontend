@@ -946,3 +946,135 @@
   z-index: 9999;
   box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
+
+/* ==========================================================================
+   ⭐ Recommended Products Section — Premium Grid & Hover Swaps
+   ========================================================================== */
+
+.recommended-products-container {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid #e2e8f0;
+  width: 100%;
+}
+
+.recommended-section-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+}
+
+.recommended-section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 40px;
+  height: 3px;
+  background: #6366f1;
+  border-radius: 50px;
+}
+
+/* Grid Layout: 4 columns desktop, 2 columns mobile */
+.recommended-products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .recommended-products-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Product Card */
+.recommended-product-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid #f1f5f9;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.recommended-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: #e2e8f0;
+}
+
+/* Image Swap Container */
+.recommended-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.recommended-product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.recommended-product-img.hover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+/* On hover, fade-in the second image and scale it slightly */
+.recommended-product-card:hover .recommended-product-img {
+  transform: scale(1.04);
+}
+
+.recommended-product-card:hover .recommended-product-img.hover-img {
+  opacity: 1;
+}
+
+/* Product Details */
+.recommended-product-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.recommended-category {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #6366f1;
+  letter-spacing: 0.5px;
+}
+
+.recommended-product-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommended-price-row {
+  margin-top: 0.25rem;
+}
+
+.recommended-price {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
