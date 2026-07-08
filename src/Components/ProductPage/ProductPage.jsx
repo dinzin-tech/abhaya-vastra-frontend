@@ -551,6 +551,7 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import API from "../../api";
 import "./ProductPage.css";
 import { Helmet } from "react-helmet-async";
+import TShirtDesignModal from "./TShirtDesignModal";
 
 const ProductPage = () => {
   const { name } = useParams();
@@ -564,6 +565,16 @@ const ProductPage = () => {
   const [error, setError] = useState(null);
 
   const isCustomizable = product?.customizable ?? customizableFromState;
+  const isMensTShirt = product && (
+    product.customizable || 
+    (product.gender?.toLowerCase() === 'male' && 
+     (product.name?.toLowerCase().includes('t-shirt') || 
+      product.name?.toLowerCase().includes('tshirt') || 
+      product.name?.toLowerCase().includes('t shirt') ||
+      product.name?.toLowerCase().includes('shirt'))) ||
+    (product.category?.toLowerCase().includes('shirt') ||
+     product.category?.toLowerCase().includes('t-shirt'))
+  );
 
   const { addToCart } = useContext(CartContext);
   const { addToWishlist, removeFromWishlist, isInWishlist } =
@@ -584,6 +595,8 @@ const ProductPage = () => {
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [showDesignModal, setShowDesignModal] = useState(false);
+  const [customDesignData, setCustomDesignData] = useState(null);
   // ===================
 
   const [selectedColor, setSelectedColor] = useState("");
@@ -1002,6 +1015,40 @@ const ProductPage = () => {
               </>
           )}
 
+          {/* === Custom T-Shirt Design Studio Trigger === */}
+          {isMensTShirt && (
+            <div className="product-custom-design-row" style={{ marginTop: '20px', marginBottom: '20px' }}>
+              <button
+                className={`custom-design-btn ${customDesignData ? 'applied' : ''}`}
+                onClick={() => setShowDesignModal(true)}
+                style={{
+                  width: '100%',
+                  height: '46px',
+                  borderRadius: '12px',
+                  border: '1.5px solid #6366f1',
+                  background: customDesignData ? '#f5f3ff' : '#ffffff',
+                  color: '#6366f1',
+                  fontWeight: '700',
+                  fontSize: '0.92rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <i className="fa-solid fa-paintbrush" />
+                {customDesignData ? 'Edit Custom Print Design' : 'Design Your Custom T-Shirt'}
+              </button>
+              {customDesignData && (
+                <div style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: '700', marginTop: '6px', textAlign: 'center' }}>
+                  ✓ Custom Print Applied! Print details will be sent with your order.
+                </div>
+              )}
+            </div>
+          )}
+
           {/* === Buttons Row === */}
           <div className="product-options-row">
             <div>
@@ -1023,9 +1070,12 @@ const ProductPage = () => {
 
             <button
               className="add-to-cart-button"
-              onClick={() =>
-                addToCart(product, quantity, selectedSize || "")
-              }
+              onClick={() => {
+                const cartProduct = customDesignData
+                  ? { ...product, ...customDesignData }
+                  : product;
+                addToCart(cartProduct, quantity, selectedSize || "");
+              }}
               disabled={isOutOfStock}
             >
               {isOutOfStock ? "Sold Out" : "Add to Cart"}
@@ -1065,6 +1115,8 @@ const ProductPage = () => {
               )}
             </div>
           </div>
+
+
 
           {/* === Description Section === */}
           <div className="product-details-toggle">
@@ -1263,6 +1315,17 @@ const ProductPage = () => {
         </div>
       )}
     </div>
+
+    {showDesignModal && (
+      <TShirtDesignModal
+        product={product}
+        selectedColor={selectedColor}
+        selectedSize={selectedSize}
+        garmentImage={mainImage}
+        onSave={(data) => setCustomDesignData(data)}
+        onClose={() => setShowDesignModal(false)}
+      />
+    )}
 
     {copiedMsg && <div className="copied-toast">{copiedMsg}</div>}
   </>

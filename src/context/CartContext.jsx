@@ -100,13 +100,25 @@ export const CartProvider = ({ children }) => {
     try {
       const sessionId = getSessionId();
       
-      const response = await API.post("/cart", {
+      const payload = {
         product_id: product.id,
         quantity: quantity,
         selectedSize: selectedSize || "",
         selectedColor: product.selectedColor || "",
         session_id: sessionId,
-      });
+      };
+
+      if (product.custom_design_url) {
+        payload.custom_design_url = product.custom_design_url;
+      }
+      if (product.custom_preview_url) {
+        payload.custom_preview_url = product.custom_preview_url;
+      }
+      if (product.custom_text) {
+        payload.custom_text = product.custom_text;
+      }
+
+      const response = await API.post("/cart", payload);
 
       if (response.data.success) {
         // Refresh cart from backend

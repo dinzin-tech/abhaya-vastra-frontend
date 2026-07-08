@@ -328,6 +328,9 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
           color: item.selectedColor,
           selectedSize: item.selectedSize,
           selectedColor: item.selectedColor,
+          custom_design_url: item.custom_design_url || null,
+          custom_preview_url: item.custom_preview_url || null,
+          custom_text: item.custom_text || null,
         })),
         subtotal,
         discount,
@@ -631,7 +634,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
               <ul className="items-list">
                 {cartItems.map((item) => (
                   <li key={item.id} className="cart-item">
-                    <img src={item.image} alt={item.name} className="item-image" />
+                    <img src={item.custom_preview_url || item.image} alt={item.name} className="item-image" />
                     <div className="item-details">
                       <p className="item-name">{item.name}</p>
                       {item.selectedSize && <p className="item-size">Size: {item.selectedSize}</p>}

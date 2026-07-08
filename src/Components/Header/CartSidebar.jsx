@@ -286,18 +286,33 @@ const CartSidebar = () => {
                 {cartItems.map((item) => (
                   <div key={item.cartKey} className="cart-item">
                     <div className="cart-item-details">
-                      <img
-                        src={item.image}
+                       <img
+                        src={item.custom_preview_url || item.image}
                         alt={item.name}
                         className="item-image"
                       />
                       <div>
                         <p className="item-name">{item.name}</p>
                         {item.selectedSize && (
-                            <p className="item-size">Size: {item.selectedSize}</p>
+                            <p className="item-size" style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#6b7280' }}>Size: {item.selectedSize}</p>
                           )}
-                        {/* <p className="item-price">Rs. {item.price.toFixed(2)}</p> */}
-                        <p className="item-price">Rs. {(parseFloat(item.price) || 0).toFixed(2)}</p>
+                        {item.custom_design_url && (
+                          <p style={{ margin: '3px 0 0 0' }}>
+                            <span style={{ 
+                              fontSize: '0.68rem', 
+                              color: '#6366f1', 
+                              background: '#f5f3ff', 
+                              padding: '2px 6px', 
+                              borderRadius: '4px',
+                              fontWeight: '700',
+                              border: '0.5px solid #c7d2fe',
+                              display: 'inline-block'
+                            }}>
+                              🎨 Customized Print
+                            </span>
+                          </p>
+                        )}
+                        <p className="item-price" style={{ marginTop: '4px' }}>Rs. {(parseFloat(item.price) || 0).toFixed(2)}</p>
                       </div>
                     </div>
 
