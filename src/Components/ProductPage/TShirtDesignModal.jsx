@@ -85,7 +85,7 @@ const removeBackground = (imageUrl, tolerance) => {
 const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage, onSave, onClose }) => {
   const [elements, setElements] = useState([]);
   const [activeId, setActiveId] = useState(null);
-  
+
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -93,7 +93,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
   const [bgTolerance, setBgTolerance] = useState(40);
 
   const studioRef = useRef(null);
-  
+
   // Tabs & Design Library State
   const [rightTab, setRightTab] = useState("library"); // "library" | "edit"
   const [categories, setCategories] = useState([]);
@@ -202,7 +202,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
         filter: "none",
         bgRemoved: false
       };
-      
+
       setElements((prev) => [...prev, newEl]);
       setActiveId(newEl.id);
 
@@ -213,7 +213,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
           headers: { "Content-Type": "multipart/form-data" }
         });
         if (res.data.success) {
-          setElements((prev) => prev.map(el => 
+          setElements((prev) => prev.map(el =>
             el.id === newEl.id ? { ...el, serverUrl: res.data.url } : el
           ));
         }
@@ -277,25 +277,25 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
     setActiveId(id);
     setIsDragging(true);
     setDragType(type);
-    
+
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    
+
     setDragStart({ x: clientX, y: clientY });
-    
+
     const el = elements.find(e => e.id === id);
     setInitialElState({ ...el });
   };
 
   const handlePointerMove = (e) => {
     if (!isDragging || !activeId || !initialElState) return;
-    
+
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    
+
     const dx = clientX - dragStart.x;
     const dy = clientY - dragStart.y;
-    
+
     if (dragType === 'move') {
       updateActiveElement({ x: initialElState.x + dx, y: initialElState.y + dy });
     } else if (dragType === 'resize') {
@@ -308,7 +308,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
       const centerY = rect.top + rect.height / 2 + initialElState.y;
       const angle = Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
       const startAngle = Math.atan2(dragStart.y - centerY, dragStart.x - centerX) * (180 / Math.PI);
-      
+
       updateActiveElement({ rotate: initialElState.rotate + (angle - startAngle) });
     }
   };
@@ -324,15 +324,15 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
     const idx = elements.findIndex(el => el.id === activeId);
     if (direction === 'up' && idx < elements.length - 1) {
       const newEls = [...elements];
-      [newEls[idx], newEls[idx+1]] = [newEls[idx+1], newEls[idx]];
+      [newEls[idx], newEls[idx + 1]] = [newEls[idx + 1], newEls[idx]];
       setElements(newEls);
     } else if (direction === 'down' && idx > 0) {
       const newEls = [...elements];
-      [newEls[idx], newEls[idx-1]] = [newEls[idx-1], newEls[idx]];
+      [newEls[idx], newEls[idx - 1]] = [newEls[idx - 1], newEls[idx]];
       setElements(newEls);
     }
   };
-  
+
   const deleteActiveElement = () => {
     setElements(elements.filter(el => el.id !== activeId));
     setActiveId(null);
@@ -367,7 +367,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
     // Rewrite URL to go through backend media proxy to avoid CORS blocks
     let proxyUrl = url;
     const baseApiUrl = API.defaults.baseURL || "http://localhost:8000/api";
-    
+
     if (url.includes("/storage/")) {
       const parts = url.split("/storage/");
       const path = parts[parts.length - 1];
@@ -417,7 +417,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
       const studioH = studioRef.current?.clientHeight || 400;
 
       const garmentDataUrl = await fetchAsDataUrl(garmentImage);
-      
+
       const loadedImages = {};
       for (const el of elements) {
         if (el.type === 'image') {
@@ -434,7 +434,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
         elements.forEach(el => {
           tCtx.save();
           tCtx.globalAlpha = el.opacity;
-          
+
           if (el.type === 'image') {
             const img = loadedImages[el.id];
             if (img) {
@@ -454,7 +454,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
             tCtx.textBaseline = "middle";
             tCtx.translate(W / 2 + el.x * scaleX, H / 2 + el.y * scaleY);
             tCtx.rotate((el.rotate * Math.PI) / 180);
-            
+
             if (el.strokeWidth > 0) {
               tCtx.strokeStyle = el.strokeColor;
               tCtx.lineWidth = el.strokeWidth * scaleY;
@@ -462,7 +462,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
             }
             tCtx.fillText(el.text, 0, 0);
           }
-          
+
           tCtx.restore();
         });
       };
@@ -497,7 +497,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
             onSave({
               custom_design_url: res.data.url,
               custom_preview_url: previewDataUrl,
-              custom_elements: JSON.stringify(elements.map(e => ({...e, url: e.serverUrl})))
+              custom_elements: JSON.stringify(elements.map(e => ({ ...e, url: e.serverUrl })))
             });
             onClose();
           } else { setError("Failed to save print layout."); }
@@ -519,9 +519,9 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
   };
 
   return (
-    <div className="ds-modal-overlay" 
-         onMouseMove={handlePointerMove} onMouseUp={handlePointerUp} onMouseLeave={handlePointerUp}
-         onTouchMove={handlePointerMove} onTouchEnd={handlePointerUp}>
+    <div className="ds-modal-overlay"
+      onMouseMove={handlePointerMove} onMouseUp={handlePointerUp} onMouseLeave={handlePointerUp}
+      onTouchMove={handlePointerMove} onTouchEnd={handlePointerUp}>
       <div class="ds-modal-card">
         {/* Header */}
         <div className="ds-modal-header">
@@ -546,11 +546,10 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                 className="ds-studio-canvas"
                 ref={studioRef}
                 style={{ backgroundImage: `url(${garmentImage})` }}
-                onClick={() => setActiveId(null)}
               >
                 {elements.map((el) => {
                   const isActive = el.id === activeId;
-                  
+
                   return (
                     <div
                       key={el.id}
@@ -564,16 +563,16 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                       onTouchStart={(e) => handlePointerDown(e, el.id, 'move')}
                     >
                       {el.type === 'image' ? (
-                        <img 
-                          src={el.url} 
-                          alt="design" 
+                        <img
+                          src={el.url}
+                          alt="design"
                           draggable={false}
-                          style={{ 
-                            width: 160 * el.scale, 
+                          style={{
+                            width: 160 * el.scale,
                             height: 'auto',
                             filter: el.filter,
                             userSelect: 'none'
-                          }} 
+                          }}
                         />
                       ) : (
                         <div style={{
@@ -588,17 +587,17 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                           {el.text}
                         </div>
                       )}
-                      
+
                       {/* Active Box Handles */}
                       {isActive && (
                         <div className="ds-bounding-box">
-                          <div 
-                            className="ds-handle resize-handle" 
+                          <div
+                            className="ds-handle resize-handle"
                             onMouseDown={(e) => handlePointerDown(e, el.id, 'resize')}
                             onTouchStart={(e) => handlePointerDown(e, el.id, 'resize')}
                           />
-                          <div 
-                            className="ds-handle rotate-handle" 
+                          <div
+                            className="ds-handle rotate-handle"
                             onMouseDown={(e) => handlePointerDown(e, el.id, 'rotate')}
                             onTouchStart={(e) => handlePointerDown(e, el.id, 'rotate')}
                           >
@@ -610,7 +609,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                   );
                 })}
               </div>
-              
+
               {/* Add Buttons */}
               <div className="ds-toolbar">
                 <button onClick={addText} className="ds-toolbar-btn">📝 Add Text</button>
@@ -633,14 +632,14 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
             {/* ── Right: Controls Panel ── */}
             <div className="ds-controls-panel">
               <div className="ds-tabs">
-                <button 
-                  className={`ds-tab-btn ${rightTab === "library" ? "active" : ""}`} 
+                <button
+                  className={`ds-tab-btn ${rightTab === "library" ? "active" : ""}`}
                   onClick={() => setRightTab("library")}
                 >
                   Design Library
                 </button>
-                <button 
-                  className={`ds-tab-btn ${rightTab === "edit" ? "active" : ""}`} 
+                <button
+                  className={`ds-tab-btn ${rightTab === "edit" ? "active" : ""}`}
                   onClick={() => setRightTab("edit")}
                   disabled={!activeElement}
                 >
@@ -651,14 +650,14 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
               {rightTab === "library" ? (
                 <div className="ds-library-tab">
                   <div className="ds-library-filters">
-                    <input 
-                      type="text" 
-                      placeholder="Search designs..." 
+                    <input
+                      type="text"
+                      placeholder="Search designs..."
                       className="ds-search-input"
                       value={searchQuery}
                       onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                     />
-                    <select 
+                    <select
                       className="ds-category-select"
                       value={selectedCat}
                       onChange={(e) => { setSelectedCat(e.target.value); setCurrentPage(1); }}
@@ -678,8 +677,8 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                     <>
                       <div className="ds-library-grid">
                         {designs.map(design => (
-                          <div 
-                            key={design.id} 
+                          <div
+                            key={design.id}
                             className="ds-library-item"
                             onClick={() => addDesignFromLibrary(design.image_url, design.title)}
                           >
@@ -694,7 +693,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                       {/* Pagination */}
                       {totalPages > 1 && (
                         <div className="ds-pagination">
-                          <button 
+                          <button
                             className="ds-page-btn"
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(p => p - 1)}
@@ -702,7 +701,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                             Prev
                           </button>
                           <span>Page {currentPage} of {totalPages}</span>
-                          <button 
+                          <button
                             className="ds-page-btn"
                             disabled={currentPage === totalPages}
                             onClick={() => setCurrentPage(p => p + 1)}
@@ -721,7 +720,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                     <div className="ds-action-row">
                       <button onClick={() => moveLayer('up')}>Bring Forward</button>
                       <button onClick={() => moveLayer('down')}>Send Backward</button>
-                      <button onClick={deleteActiveElement} style={{color: 'red'}}>Delete</button>
+                      <button onClick={deleteActiveElement} style={{ color: 'red' }}>Delete</button>
                     </div>
                   </div>
 
@@ -821,7 +820,7 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
               )}
 
               {/* Action Buttons */}
-              <div className="ds-buttons-group" style={{marginTop: 'auto'}}>
+              <div className="ds-buttons-group" style={{ marginTop: 'auto' }}>
                 <button className="ds-action-btn secondary" onClick={handleReset}>🔄 Reset All</button>
                 <button className="ds-action-btn primary" onClick={handleConfirmDesign} disabled={uploading}>
                   {uploading ? "💾 Saving..." : "🎨 Confirm Design"}
