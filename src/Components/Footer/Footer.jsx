@@ -77,6 +77,35 @@ const Footer = () => (
           <h4 className="column-title">Follow Us</h4>
           <SocialLinks />
         </div>
+
+        {/* Company Legal Details Column */}
+        <div>
+          <h4 className="column-title">Legal Details</h4>
+          <div className="legal-details" style={{ fontSize: "0.85rem", lineHeight: "1.6", color: "#564b47" }}>
+            <p style={{ margin: "0 0 0.5rem 0" }}>
+              <strong>Udyam Reg Number:</strong><br />
+              UDYAM-KR-03-0713235
+            </p>
+            <p style={{ margin: "0 0 0.5rem 0" }}>
+              <strong>Office Address:</strong><br />
+              Abhaya Vastra<br />
+              #52/A, 6th Cross, Attur Layout<br />
+              Abhaya Yelahanka New Town 1st<br />
+              Yelahanka New Town<br />
+              Bengaluru, Karnataka – 560064<br />
+              India
+            </p>
+            <p style={{ margin: "0 0 0.5rem 0" }}>
+              <strong>Phone:</strong><br />
+              8217013567<br />
+              7411016567 (Alternative)
+            </p>
+            <p style={{ margin: "0" }}>
+              <strong>Email:</strong><br />
+              info@abhayavastra.store
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Copyright Section */}

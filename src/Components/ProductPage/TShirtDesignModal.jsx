@@ -478,31 +478,52 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
         } catch { }
       }
       drawElements(pCtx);
-      const previewDataUrl = previewCanvas.toDataURL("image/png");
 
       const printCanvas = document.createElement("canvas");
       printCanvas.width = W; printCanvas.height = H;
       const printCtx = printCanvas.getContext("2d");
       drawElements(printCtx);
 
-      printCanvas.toBlob(async (blob) => {
-        if (!blob) { setError("Failed to generate print file."); setUploading(false); return; }
-        const fd = new FormData();
-        fd.append("image", blob, "print_design.png");
-        try {
-          const res = await API.post("/custom-design/upload", fd, {
-            headers: { "Content-Type": "multipart/form-data" }
-          });
-          if (res.data.success) {
-            onSave({
-              custom_design_url: res.data.url,
-              custom_preview_url: previewDataUrl,
-              custom_elements: JSON.stringify(elements.map(e => ({ ...e, url: e.serverUrl })))
+      previewCanvas.toBlob((previewBlob) => {
+        if (!previewBlob) {
+          setError("Failed to generate preview file.");
+          setUploading(false);
+          return;
+        }
+
+        printCanvas.toBlob(async (printBlob) => {
+          if (!printBlob) {
+            setError("Failed to generate print file.");
+            setUploading(false);
+            return;
+          }
+
+          const fd = new FormData();
+          fd.append("image", printBlob, "print_design.png");
+          fd.append("mockup", previewBlob, "preview_mockup.png");
+
+          try {
+            const res = await API.post("/custom-design/upload", fd, {
+              headers: { "Content-Type": "multipart/form-data" }
             });
-            onClose();
-          } else { setError("Failed to save print layout."); }
-        } catch { setError("Server error."); }
-        finally { setUploading(false); }
+
+            if (res.data.success) {
+              onSave({
+                custom_design_url: res.data.url,
+                custom_preview_url: res.data.mockup_url, // Public storage URL
+                custom_elements: JSON.stringify(elements.map(e => ({...e, url: e.serverUrl})))
+              });
+              onClose();
+            } else {
+              setError("Failed to save print layouts.");
+            }
+          } catch (err) {
+            console.error(err);
+            setError("Server error uploading designs.");
+          } finally {
+            setUploading(false);
+          }
+        }, "image/png");
       }, "image/png");
 
     } catch (err) {
@@ -546,6 +567,11 @@ const TShirtDesignModal = ({ product, selectedColor, selectedSize, garmentImage,
                 className="ds-studio-canvas"
                 ref={studioRef}
                 style={{ backgroundImage: `url(${garmentImage})` }}
+                onClick={(e) => {
+                  if (e.target === e.currentTarget) {
+                    setActiveId(null);
+                  }
+                }}
               >
                 {elements.map((el) => {
                   const isActive = el.id === activeId;
