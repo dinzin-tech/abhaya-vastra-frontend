@@ -86,25 +86,19 @@ const Footer = () => (
               <strong>Udyam Reg Number:</strong><br />
               UDYAM-KR-03-0713235
             </p>
-            <p style={{ margin: "0 0 0.5rem 0" }}>
-              <strong>Office Address:</strong><br />
-              Abhaya Vastra<br />
-              #52/A, 6th Cross, Attur Layout<br />
-              Abhaya Yelahanka New Town 1st<br />
-              Yelahanka New Town<br />
-              Bengaluru, Karnataka – 560064<br />
-              India
-            </p>
-            <p style={{ margin: "0 0 0.5rem 0" }}>
-              <strong>Phone:</strong><br />
-              8217013567<br />
-              7411016567 (Alternative)
-            </p>
-            <p style={{ margin: "0" }}>
+            <p style={{ margin: "0 0 0.75rem 0" }}>
               <strong>Email:</strong><br />
               info@abhayavastra.store
             </p>
           </div>
+          <ul className="link-list">
+            <li>
+              <NavLink to="/terms">Terms and Conditions</NavLink>
+            </li>
+            <li>
+              <NavLink to="/privacy">Privacy Policy</NavLink>
+            </li>
+          </ul>
         </div>
       </div>
 
