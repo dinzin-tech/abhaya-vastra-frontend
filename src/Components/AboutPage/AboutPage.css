@@ -40,14 +40,20 @@
 }
 
 .section-heading {
-  font-size: 1.75rem;
-  font-weight: 700;
-  /* color: #b8860b; */
-  /* color: #28a745; */
-  /* color: #724cf9; */
-  /* color: var(--accent-2-color); */
-  /* color: var(--accent-2-color); */
-  /* margin-top: 2rem; */
-  /* margin-bottom: 1rem; */
   text-align: left;
 }
+
+@media (max-width: 600px) {
+  .about-container {
+    padding: 1rem 0.5rem !important;
+  }
+  .about-container .page-title {
+    font-size: 1.4rem !important;
+    word-break: break-word !important;
+  }
+  .page-text {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+}
+

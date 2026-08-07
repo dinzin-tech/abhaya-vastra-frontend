@@ -152,6 +152,8 @@ import VideoShorts from "./VideoShorts";
 import ProductsSection from "./ProductsSection";
 import ReviewsBanner from "./ReviewsBanner";
 import GalleryWithLightbox from "./GalleryWithLightbox";
+import PradaLookbook from "./PradaLookbook";
+import PradaStory from "./PradaStory";
 import { bannerImages, shortsList } from "../products";
 
 const HomePage = ({ handleAddToCart }) => {
@@ -180,7 +182,10 @@ const HomePage = ({ handleAddToCart }) => {
         setAllProducts(products);
       })
       .catch((err) => console.error("Error fetching products:", err))
-      .finally(() => setLoading(false), setLoadingProducts(false));
+      .finally(() => {
+        setLoading(false);
+        setLoadingProducts(false);
+      });
   }, []);
 
   // --- Fetch featured products ---
@@ -220,8 +225,8 @@ const HomePage = ({ handleAddToCart }) => {
   // --- Loader ---
   if (loading) {
     return (
-      <div style={{ textAlign: "center", padding: "50px" }}>
-        <p>Loading products...</p>
+      <div style={{ textAlign: "center", padding: "80px 20px" }}>
+        <p className="font-prada-heading" style={{ letterSpacing: '0.2em' }}>LOADING ABHAYA VASTRA...</p>
       </div>
     );
   }
@@ -241,12 +246,10 @@ const HomePage = ({ handleAddToCart }) => {
   // --- Render ---
   return (
     <>
-      <Banner bannerImages={bannerImages} />
+      {/* Single Dynamic Prada Hero Banner */}
+      <Banner />
 
-      {/* <div className="desktop-only"><ShopByCategory /></div> */}
-      {/* <div className="mobile-only"><CategorySlider /></div> */}
-
-      {/* Featured Section */}
+      {/* Featured Section with Sidebar Filters */}
       <FeaturedProductsSection
         products={visibleAllProducts}
         filters={filters}
@@ -257,6 +260,9 @@ const HomePage = ({ handleAddToCart }) => {
         loadingProducts={loadingProducts}
         setLoadingProducts={setLoadingProducts}
       />
+
+      {/* Prada Editorial Lookbook Campaign Grid */}
+      <PradaLookbook />
 
       {/* Best Sellers */}
       <ProductsSection
@@ -282,10 +288,8 @@ const HomePage = ({ handleAddToCart }) => {
         handleAddToCart={handleAddToCart}
       />
 
-      {/* Other Sections */}
+      {/* Video Shorts */}
       <VideoShorts shorts={shortsList} handleAddToCart={handleAddToCart} />
-      <ReviewsBanner bannerImages={bannerImages} />
-      <GalleryWithLightbox images={bannerImages} autoSlideInterval={3000} />
     </>
   );
 };

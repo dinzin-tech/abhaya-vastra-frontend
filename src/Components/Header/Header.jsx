@@ -61,8 +61,6 @@ const Header = () => {
 
   return (
     <header className="header">
-      {/* Green Sliding Banner */}
-      <SlidingBanner products={bannerProducts} />
       {/* Top Ribbon */}
       <TopRibbon />
       
@@ -80,13 +78,11 @@ const Header = () => {
           )}
         </button>
 
-        {/* Logo */}
+        {/* Abhaya Vastra Luxury Brand Logo */}
         <div className="logo-section">
           <Link to="/" className="logo-link">
-            <img src={logo} alt="MyShop Logo" className="logo-image" />
-            {/* <h1 className="logo-text">Abhaya Vastra</h1> */}
+            <img src={logo} alt="Abhaya Vastra — Couture of Courage" className="brand-logo-img" />
           </Link>
-          {/* <SocialLinks className="small" /> */}
         </div>
 
         {/* Right Side Icons */}
@@ -221,7 +217,6 @@ const Header = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="mobile-search-input"
-                autoFocus
               />
               <button
                 className="mobile-search-submit"

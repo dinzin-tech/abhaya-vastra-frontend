@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../context/CartContext";
 import { WishlistContext } from "../../context/WishlistContext";
 import { Link } from "react-router-dom";
+import "./ProductCard.css";
 
 const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -11,7 +12,19 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
   const [currentPrice, setCurrentPrice] = useState(product.total_price || product.price);
 
   const { addToCart } = useContext(CartContext);
-  const { removeFromWishlist } = useContext(WishlistContext);
+  const { wishlistItems, addToWishlist, removeFromWishlist } = useContext(WishlistContext);
+
+  const isInWishlist = wishlistItems.some((item) => item.id === product.id);
+
+  const toggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
 
   // Size options from product.sizes - handle both formats
   const hasSizeOptions = product.sizes && product.sizes.length > 0;
@@ -23,32 +36,17 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
 
   // Function to get variant price based on selected size
   const getVariantPrice = (size) => {
-    console.log('🔍 [ProductCard] getVariantPrice called for:', product.name);
-    console.log('📏 Size:', size);
-    console.log('📦 Has variants:', product.variants?.length || 0);
-    
     if (!size || !product.variants || product.variants.length === 0) {
-      console.log('⚠️ No size or variants, using base price:', product.total_price || product.price);
       return product.total_price || product.price;
     }
-
-    // Find variant matching the selected size
     const variant = product.variants.find(v => v.size === size);
-    console.log('🎯 Found variant:', variant);
-    
     if (variant) {
-      const finalPrice = variant.total_price || variant.price || product.total_price || product.price;
-      console.log('💰 Using variant total_price:', finalPrice);
-      return finalPrice;
+      return variant.total_price || variant.price || product.total_price || product.price;
     }
-    
-    // Fallback to product base price
-    console.log('⚠️ No variant found, using base price:', product.total_price || product.price);
     return product.total_price || product.price;
   };
 
   useEffect(() => {
-    console.log('🔄 [ProductCard] useEffect triggered for:', product.name);
     let sizeToSelect = null;
 
     if (selectedSizes.length && normalizedSizes.length) {
@@ -58,22 +56,19 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
       }
     }
 
-    // Default fallback - select first size
     if (!sizeToSelect && normalizedSizes.length > 0) {
       sizeToSelect = normalizedSizes[0];
     }
 
     if (sizeToSelect) {
-      console.log('✅ Setting initial size:', sizeToSelect);
       setSelectedSize(sizeToSelect);
       setCurrentPrice(getVariantPrice(sizeToSelect));
     }
   }, [selectedSizes, product.id, normalizedSizes.length]);
 
-  // Get stock for selected size
   const getVariantStock = (size) => {
     if (!size || !product.variants || product.variants.length === 0) {
-      return 999; // Default high stock
+      return 999;
     }
     const variant = product.variants.find(v => v.size === size);
     return variant?.stock ?? 0;
@@ -82,12 +77,9 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
   const currentStock = getVariantStock(selectedSize);
   const isOutOfStock = currentStock <= 0;
 
-  // Update price when size changes
   const handleSizeChange = (size) => {
-    console.log('🔄 [ProductCard] Size changed to:', size);
     setSelectedSize(size);
     const newPrice = getVariantPrice(size);
-    console.log('💵 Setting new price:', newPrice);
     setCurrentPrice(newPrice);
   };
 
@@ -106,17 +98,28 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
   return (
     <>
       <div
-        className="product-card"
+        className="product-card prada-product-card"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-      <Link to={`/product/${product.slug || encodeURIComponent(product.name)}`}>
-        <img
-          src={isHovered && product.hoverImage ? product.hoverImage : product.image}
-          alt={product.name}
-          className="product-image"
-        />
-      </Link>
+        <div className="product-image-container">
+          <Link to={`/product/${product.slug || encodeURIComponent(product.name)}`}>
+            <img
+              src={isHovered && product.hoverImage ? product.hoverImage : product.image}
+              alt={product.name}
+              className="product-image"
+              loading="lazy"
+              decoding="async"
+            />
+          </Link>
+          <button
+            className={`prada-wishlist-btn ${isInWishlist ? "active" : ""}`}
+            onClick={toggleWishlist}
+            aria-label="Wishlist"
+          >
+            <i className={isInWishlist ? "fas fa-heart" : "far fa-heart"}></i>
+          </button>
+        </div>
 
       <div className="product-info">
         <Link to={`/product/${product.slug || encodeURIComponent(product.name)}`} className="product-title-link">
@@ -388,10 +391,15 @@ const ProductCard = ({ product, showRemove = false, selectedSizes = [] }) => {
 
         @media (max-width: 900px) {
           .product-card {
-            height: 323px;
+            height: 100% !important;
+            min-height: 340px;
           }
           .product-details {
             margin-top: 8px !important;
+          }
+          .product-title {
+            font-size: 0.8rem !important;
+            line-height: 1.25 !important;
           }
         }
         

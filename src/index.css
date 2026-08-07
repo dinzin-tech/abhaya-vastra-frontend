@@ -1,43 +1,250 @@
-
-/* 1️⃣ Import the correct font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Rubik+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@200;300;400;500;600;700&family=Montserrat:ital,wght@0,200..900;1,200..900&display=swap');
 
 :root {
-  --bg-color: #f5f5f5;
-  --text-color-primary: #222;
-  --text-color-secondary: #666;
-  /* --accent-color: #b8860b; */
-  /* --accent-color: #28a745; */
-  /* --accent-color: #724cf9; */
-  /* --accent-color: #A1712F; */
-  --accent-color: #651423;
-  /* --accent-2-color: #2c0735; */
-  --accent-2-color: #040605;
-  /* --accent-2-color: #feecec; */
-  --bg-card: rgba(2, 1, 1, 0.8);
-  --border-color: rgba(0, 0, 0, 0.1);
-  --footer-bg: #1a202c;
-  --footer-text: #e2e8f0;
-  --footer-link: #cbd5e0;
+  --prada-black: #000000;
+  --prada-white: #ffffff;
+  --prada-dark: #0a0a0a;
+  --prada-charcoal: #141414;
+  --prada-gray-100: #f8f8f8;
+  --prada-gray-200: #e9e9e9;
+  --prada-gray-300: #cccccc;
+  --prada-gray-600: #666666;
+  --prada-gray-800: #222222;
+
+  --bg-color: #ffffff;
+  --text-color-primary: #000000;
+  --text-color-secondary: #555555;
+  --accent-color: #000000;
+  --accent-2-color: #111111;
+  --bg-card: #ffffff;
+  --border-color: #e5e5e5;
+  --footer-bg: #000000;
+  --footer-text: #ffffff;
+  --footer-link: #a0a0a0;
+
+  --font-logo: 'Cinzel', 'Bodoni Moda', serif;
+  --font-heading: 'Bodoni Moda', 'Cinzel', serif;
+  --font-body: 'Inter', 'Montserrat', sans-serif;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  /* font-family: 'Rubik One', sans-serif; */
-  /* font-family:  sans-serif; */
-  font-family: poppins;
-    /* background: #e6b53d; */
-
-  background: linear-gradient(to bottom right, #fffaf1, #fff4d8);
+  font-family: var(--font-body);
+  background-color: var(--bg-color);
   color: var(--text-color-primary);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100vw;
+  letter-spacing: 0.02em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+button {
+  font-family: var(--font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Prada Luxury Utility Classes */
+.font-prada-logo {
+  font-family: var(--font-logo);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.font-prada-heading {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.prada-btn-primary {
+  background-color: var(--prada-black);
+  color: var(--prada-white);
+  border: 1px solid var(--prada-black);
+  padding: 14px 32px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.prada-btn-primary:hover {
+  background-color: var(--prada-white);
+  color: var(--prada-black);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.prada-btn-secondary {
+  background-color: transparent;
+  color: var(--prada-black);
+  border: 1px solid var(--prada-black);
+  padding: 14px 32px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.prada-btn-secondary:hover {
+  background-color: var(--prada-black);
+  color: var(--prada-white);
+}
+
+.prada-btn-white {
+  background-color: var(--prada-white);
+  color: var(--prada-black);
+  border: 1px solid var(--prada-white);
+  padding: 14px 32px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.prada-btn-white:hover {
+  background-color: transparent;
+  color: var(--prada-white);
+}
+
+.prada-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--prada-gray-200);
+  margin: 40px 0;
+}
+
+.prada-section-title {
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.prada-section-subtitle {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--prada-gray-600);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.prada-input {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: #ffffff;
+  border: 1px solid var(--prada-gray-300);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--prada-black);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.prada-input:focus {
+  border-color: var(--prada-black);
+  box-shadow: 0 0 0 1px var(--prada-black);
+}
+
+.prada-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--prada-black);
+}
+
+.prada-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background-color: var(--prada-black);
+  color: var(--prada-white);
+  border-radius: 0;
+}
+
+.prada-badge-outline {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: var(--prada-black);
+  border: 1px solid var(--prada-black);
+}
+
+.prada-card {
+  background: var(--prada-white);
+  border: 1px solid var(--prada-gray-200);
+  padding: 32px;
+  border-radius: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333333;
 }

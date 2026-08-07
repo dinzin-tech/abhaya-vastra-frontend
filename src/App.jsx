@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from "./Components/HomePage/HomePage";
@@ -10,7 +10,7 @@ import CustomizationPage from "./Components/CustomizationPage/CustomizationPage"
 import ContactPage from "./Components/ContactPage/ContactPage";
 import CategoryPage from "./Components/CategoryPage/CategoryPage";
 import CheckoutPage from "./Components/CheckoutPage/CheckoutPage";
-import Header from "./Components//Header/Header";
+import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -31,16 +31,30 @@ import FeaturedProductPage from "./Components/FeaturedProductPage/FeaturedProduc
 import AllProductsPage from "./Components/AllProductsPage/AllProductsPage";
 import SearchResultsPage from "./Components/SearchPage/SearchPage";
 
+// Force manual scroll restoration so browser never restores scroll to footer on refresh
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
 
+// ScrollToTop component: Ensures every route change & page load starts at top header
+const ScrollToTop = () => {
+  const { pathname, search } = useLocation();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }, [pathname, search]);
 
-
+  return null;
+};
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <WishlistProvider>
+          <ScrollToTop />
           <Header />
           <ToastContainer 
             position="top-right"
@@ -61,8 +75,6 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/orders" element={<OrdersPage />} />
-              {/* <Route path="/men" element={<MenPage />} />
-              <Route path="/women" element={<WoMenPage />} /> */}
               <Route path="/customization" element={<CustomizationPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/category/:category?" element={<CategoryPage />} />
@@ -73,10 +85,7 @@ function App() {
               <Route path="/faqs" element={<FaqPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<SignupPage />} />
-              <Route
-                path="/product/:name"
-                element={<ProductPage />}
-              />
+              <Route path="/product/:name" element={<ProductPage />} />
               <Route path="/wishlist" element={<WishlistPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/best-sellers" element={<BestSellerPage />} />
@@ -84,10 +93,6 @@ function App() {
               <Route path="/featured-products" element={<FeaturedProductPage />} />
               <Route path="/all-products" element={<AllProductsPage />} />
               <Route path="/search" element={<SearchResultsPage />} />
-
-
-
-
             </Routes>
           </main>
           <Footer />

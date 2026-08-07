@@ -199,32 +199,45 @@ const FeaturedProductsSection = ({ products, filters, setFilters, pageType = "ho
           )} */}
 
           {loadingProducts ? (
-            <p>Loading..</p>
+            <div className="product-grid grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-3" style={{ minHeight: "600px" }}>
+              {[1, 2, 3, 4, 5, 6].map((idx) => (
+                <div key={idx} className="product-card-skeleton" style={{
+                  height: "360px",
+                  background: "linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%)",
+                  backgroundSize: "800px 100%",
+                  animation: "shimmer 1.5s infinite"
+                }} />
+              ))}
+            </div>
           ) : (
             filteredAndSortedProducts.length === 0 ? (
-            <p className="empty-message">No products found.</p>
-          ) : (
-            <>
-              <ProductGrid
-                products={pageType === "home" ? filteredAndSortedProducts : paginatedProducts}
-                selectedSizes={filters.size}
-              />
+              <div className="empty-products-box" style={{ padding: "60px 20px", textAlignment: "center", minHeight: "350px" }}>
+                <p className="empty-message font-prada-heading" style={{ letterSpacing: "0.15em", color: "#666" }}>
+                  NO PRODUCTS MATCH THE SELECTED FILTERS.
+                </p>
+              </div>
+            ) : (
+              <>
+                <ProductGrid
+                  products={pageType === "home" ? filteredAndSortedProducts : paginatedProducts}
+                  selectedSizes={filters.size}
+                />
 
-              {pageType !== "home" && filteredAndSortedProducts.length > PAGE_SIZE && (
-                <div className="pagination-container">
-                  {Array.from({ length: Math.ceil(filteredAndSortedProducts.length / PAGE_SIZE) }).map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentPage(idx + 1)}
-                      className={`pagination-button ${currentPage === idx + 1 ? "active" : ""}`}
-                    >
-                      {idx + 1}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </>
-          )
+                {pageType !== "home" && filteredAndSortedProducts.length > PAGE_SIZE && (
+                  <div className="pagination-container">
+                    {Array.from({ length: Math.ceil(filteredAndSortedProducts.length / PAGE_SIZE) }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentPage(idx + 1)}
+                        className={`pagination-button ${currentPage === idx + 1 ? "active" : ""}`}
+                      >
+                        {idx + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            )
           )}
         </div>
 

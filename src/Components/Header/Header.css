@@ -58,60 +58,111 @@ i.fa-heart
   font-size: 14px;
 }
 .header {
-  /* background-color: #009d72; */
-  background-color: #fff;
-  box-shadow: 0 9px 12px 0 rgba(0, 0, 0, 0.09);  
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--prada-gray-200);
   position: sticky;
   top: 0;
-  z-index: 40;
-  color: #000 !important;
+  z-index: 100;
+  color: var(--prada-black) !important;
+  transition: all 0.3s ease;
 }
 
 .nav-container {
-  /* padding: 1rem; */
-  padding: 0.4rem;
+  padding: 0.8rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
-.header-row-one {
+.prada-brand-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
 }
 
-.wishlist-button, .cart-button {
-  display: flex;
-  gap: 5px;
+.prada-brand-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  color: var(--prada-black);
+  margin-right: -0.28em; /* balance letter spacing offset */
 }
 
-.icon-button:hover {
-  /* color: #564592 !important; */
-  color: #fff !important;
+.brand-logo-img {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s ease;
 }
 
-.wishlist-button:hover {
-  color: var(--accent-2-color);
+.brand-logo-img:hover {
+  transform: scale(1.03);
+}
+
+.prada-brand-subtitle {
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--prada-gray-600);
+  margin-top: 4px;
+  font-weight: 500;
+  margin-right: -0.35em;
 }
 
 .navbar-links {
-  /* color: #000; */
-  color: #fff;
-  padding-bottom: 10px;
-  /* background: #564592; */
-  /* background: linear-gradient(135deg, #858ae3, #613dc1, #4e148c, #2c0735); */
-  /* background: linear-gradient(135deg, #FFEAC3, #F3C357,#A1712F,#040605); */
-  background: linear-gradient(135deg, #651423, #040605);
-  padding-top: 6px;
-  padding-bottom: 6px;
+  color: var(--prada-black);
+  background: var(--prada-white);
+  border-top: 1px solid var(--prada-gray-200);
+  padding: 10px 0;
+}
+
+.nav-links-desktop {
+  display: none;
+  align-items: center;
+  gap: 2.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 @media (min-width: 1024px) {
-  .nav-container {
-    flex-wrap: nowrap;
+  .nav-links-desktop {
+    display: flex;
+    justify-content: center;
   }
+}
+
+.nav-link {
+  color: var(--prada-black);
+  padding: 4px 0;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--prada-black);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--prada-black);
 }
 button.dropdown-link.signout-link {
     border: none;
@@ -717,18 +768,48 @@ button.dropdown-link.signout-link {
 }
 
 @media (max-width: 600px) {
+  .nav-container {
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .prada-brand-title {
+    font-size: 1.3rem !important;
+    letter-spacing: 0.16em !important;
+    margin-right: -0.16em !important;
+  }
+
+  .prada-brand-subtitle {
+    font-size: 0.48rem !important;
+    letter-spacing: 0.22em !important;
+  }
+
   .icon-group {
     gap: 8px !important;
   }
 }
 
 @media (max-width: 450px) {
-  .icon-group {
-    gap: 6px !important;
+  .nav-container {
+    padding: 0.4rem 0.5rem !important;
   }
-  
+
+  .prada-brand-title {
+    font-size: 1.1rem !important;
+    letter-spacing: 0.12em !important;
+    margin-right: -0.12em !important;
+  }
+
+  .prada-brand-subtitle {
+    font-size: 0.42rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  .icon-group {
+    gap: 4px !important;
+  }
+
   .icon-button {
-    padding: 4px;
+    padding: 2px 4px !important;
   }
 }
 

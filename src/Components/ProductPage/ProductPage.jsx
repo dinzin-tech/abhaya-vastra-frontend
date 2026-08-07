@@ -932,6 +932,8 @@ const ProductPage = () => {
               src={mainImage}
               alt={product.name}
               className="main-product-image"
+              fetchpriority="high"
+              decoding="async"
               style={{
                 transform: zoomState.isZoomed ? "scale(1.5)" : "scale(1)",
                 transformOrigin: zoomState.transformOrigin,
@@ -944,6 +946,8 @@ const ProductPage = () => {
                 key={i}
                 src={img}
                 alt={`View ${i + 1}`}
+                loading="lazy"
+                decoding="async"
                 className={`thumbnail-image ${
                   mainImage === img ? "selected" : ""
                 }`}

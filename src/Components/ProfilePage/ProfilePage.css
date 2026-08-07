@@ -1,69 +1,54 @@
+/* Prada High-Fashion Profile & Client Portal Styling */
+
 .settings-container {
   max-width: 1200px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.settings-container:hover {
-  transform: translateY(-5px);
+  margin: 40px auto;
+  padding: 48px;
+  background-color: var(--prada-white);
+  border: 1px solid var(--prada-gray-200);
 }
 
 .settings-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 40px;
 }
 
 .settings-header h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  /* color: #b8860b; */
-  margin: 0;
-  letter-spacing: -0.5px;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--prada-black);
+  margin-bottom: 8px;
 }
 
 .settings-header p {
-  font-size: 1.1rem;
-  color: #78909c;
-  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--prada-gray-600);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .settings-section {
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.settings-section:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
+  border-bottom: 1px solid var(--prada-gray-200);
+  padding-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .section-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  /* color: #bd860b; */
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-}
-
-.section-title::before {
-  content: "";
-  display: block;
-  width: 8px;
-  height: 8px;
-  /* background-color: #bd860b; */
-  border-radius: 50%;
-  margin-right: 12px;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--prada-black);
+  margin-bottom: 24px;
 }
 
 .form-grid {
   display: grid;
-  gap: 1.5rem 2rem;
+  gap: 24px;
   grid-template-columns: 1fr;
 }
 
@@ -79,191 +64,62 @@
 }
 
 .form-field label {
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #bd860b;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--prada-black);
+  margin-bottom: 8px;
 }
 
 .form-field input {
-  padding: 1rem 1.25rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background-color: #f7f9fc;
+  padding: 14px 16px;
+  border: 1px solid var(--prada-gray-300);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  background-color: #ffffff;
+  color: var(--prada-black);
+  outline: none;
+  transition: border-color 0.25s ease;
 }
 
 .form-field input:focus {
-  outline: none;
-  /* border-color: #bd860b; */
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(63, 81, 181, 0.15);
-}
-
-.form-field input:disabled {
-  background-color: #eef2f5;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.shipping-checkbox {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.shipping-checkbox input {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  accent-color: #bd860b;
-  cursor: pointer;
-}
-
-.notification-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f7f9fc;
-  padding: 1.2rem;
-  border-radius: 12px;
-}
-
-.notification-toggle label {
-  font-weight: 600;
-  color: #bd860b;
-  cursor: pointer;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 55px;
-  height: 30px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #d1d5db;
-  transition: 0.4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #bd860b;
-}
-
-input:checked + .slider:before {
-  transform: translateX(24px);
-}
-
-.save-button-container {
-  margin-top: 2.5rem;
-  text-align: center;
+  border-color: var(--prada-black);
 }
 
 .save-button {
-  padding: 12px 10px;
-  background-color: #b8860b;
-  color: white;
-  border: none;
-  border-radius: 50px;
+  padding: 14px 32px;
+  background-color: var(--prada-black);
+  color: var(--prada-white);
+  border: 1px solid var(--prada-black);
+  font-size: 0.8rem;
   font-weight: 600;
-  font-size: 17px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   cursor: pointer;
-  width: 150px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);
 }
 
 .save-button:hover {
-  background-color: #bd860b;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.4);
+  background-color: var(--prada-white);
+  color: var(--prada-black);
 }
 
+/* === Mobile Overrides === */
+@media (max-width: 600px) {
+  .settings-container {
+    margin: 20px auto;
+    padding: 20px 16px !important;
+  }
 
+  .settings-header h1 {
+    font-size: 1.4rem !important;
+    letter-spacing: 0.1em !important;
+    word-break: break-word;
+  }
 
-/* Animation for fading */
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
+  .save-button {
+    width: 100% !important;
   }
-  10%,
-  90% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -20px);
-  }
-  10% {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  90% {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -20px);
-  }
-}
-
-@media screen and (max-width:1100px)
-{
-  .settings-header h1
-  {
-    font-size:26px;
-  }
-  .settings-container
-  {
-    background-color: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    margin-top:0;
-    margin-bottom: 0;
-  }
-  .save-button
-  {
-    margin:0 auto;
-  }
-  .section-title
-   {
-    font-size: 19px;
-   }
 }

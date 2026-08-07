@@ -45,3 +45,18 @@
 .list-inside {
   list-style-position: inside;
 }
+
+@media (max-width: 600px) {
+  .privacy-content-card {
+    padding: 0 0.5rem !important;
+    margin: 1rem auto !important;
+  }
+  .privacy-content-card .page-title {
+    font-size: 1.3rem !important;
+    word-break: break-word !important;
+  }
+  .page-text {
+    font-size: 0.95rem !important;
+  }
+}
+

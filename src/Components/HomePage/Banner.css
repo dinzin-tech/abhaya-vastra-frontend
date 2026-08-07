@@ -1,104 +1,204 @@
-/* Banner Carousel Additional Styles */
-.banner-image-link {
+/* Prada High-Fashion Editorial Hero Banner */
+
+.prada-hero-banner-section {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  min-height: 550px;
+  background-color: var(--prada-black, #000000);
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.prada-hero-banner-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  user-select: none;
+}
+
+.prada-hero-banner-container:active {
+  cursor: grabbing;
+}
+
+/* === Slides === */
+.prada-hero-slide {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  text-decoration: none;
-  display: none;
+  opacity: 0;
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.03);
+  pointer-events: none;
 }
 
-.banner-image-link.active {
+.prada-hero-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.prada-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
   display: block;
 }
 
-.banner-dots {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 20;
-}
-
-.banner-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.banner-dot.active {
-  background: white;
-  transform: scale(1.2);
-}
-
-.banner-dot:hover {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* Dragging cursor */
-.banner-container {
-  cursor: grab;
-}
-
-.banner-container:active {
-  cursor: grabbing;
-}
-
-/* Ensure banner content is properly positioned */
-.banner-overlay {
+/* Subtle gradient from bottom — enough contrast for text, not overbearing */
+.prada-hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.28) 45%,
+    rgba(0, 0, 0, 0.0) 100%
+  );
+}
+
+/* === Content — bottom-left, no blurry box === */
+.prada-hero-content-container {
+  position: absolute;
+  bottom: 64px;
+  left: 64px;
+  max-width: 560px;
+  text-align: left;
+  color: var(--prada-white, #ffffff);
+  z-index: 10;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+
+  /* Animation */
+  animation: heroContentFadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.banner-content {
-  color: white;
-  max-width: 48rem;
+@keyframes heroContentFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile responsive adjustments */
+.prada-hero-badge {
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--prada-white, #ffffff);
+  margin-bottom: 14px;
+  padding: 5px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: inline-block;
+}
+
+.prada-hero-title {
+  font-family: var(--font-heading, serif);
+  font-size: 2.8rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--prada-white, #ffffff);
+  margin: 0 0 10px 0;
+  line-height: 1.15;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+.prada-hero-subtitle {
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: 28px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.prada-hero-cta {
+  padding: 14px 36px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  background-color: var(--prada-white, #ffffff);
+  color: var(--prada-black, #000000);
+  border: 1px solid var(--prada-white, #ffffff);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.prada-hero-cta:hover {
+  background-color: transparent;
+  color: var(--prada-white, #ffffff);
+}
+
+/* === Carousel indicators === */
+.prada-hero-indicators {
+  position: absolute;
+  bottom: 24px;
+  left: 64px;
+  display: flex;
+  gap: 8px;
+  z-index: 15;
+}
+
+.prada-hero-indicator {
+  width: 36px;
+  height: 2px;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.prada-hero-indicator.active {
+  background: var(--prada-white, #ffffff);
+  width: 54px;
+  height: 3px;
+}
+
+/* === Responsive === */
 @media (max-width: 768px) {
-  .banner-dots {
-    bottom: 15px;
+  .prada-hero-banner-section {
+    height: 65vh;
+    min-height: 420px;
   }
-  
-  .banner-dot {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .banner-heading {
-    font-size: 2rem;
-  }
-  
-  .banner-text {
-    font-size: 0.9rem;
-  }
-}
 
-@media (max-width: 480px) {
-  .banner-heading {
-    font-size: 1.5rem;
+  .prada-hero-content-container {
+    bottom: 52px;
+    left: 24px;
+    right: 24px;
+    max-width: 100%;
   }
-  
-  .banner-text {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
+
+  .prada-hero-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.08em;
   }
-  
-  .shop-now-button {
-    padding: 0.5rem 1.5rem;
-    font-size: 0.9rem;
+
+  .prada-hero-subtitle {
+    font-size: 0.72rem;
+    margin-bottom: 20px;
+  }
+
+  .prada-hero-cta {
+    padding: 12px 24px;
+    font-size: 0.68rem;
+  }
+
+  .prada-hero-indicators {
+    left: 24px;
+    bottom: 16px;
   }
 }

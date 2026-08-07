@@ -82,3 +82,19 @@ a.active {
   background-color: #ffffff;
   color: #4b5563;
 }
+
+@media (max-width: 600px) {
+  .faq-container {
+    padding: 1rem 0.5rem !important;
+    margin: 1rem auto !important;
+  }
+  .faq-title {
+    font-size: 1.4rem !important;
+    word-break: break-word !important;
+  }
+  .faq-question {
+    font-size: 0.9rem !important;
+    word-break: break-word !important;
+  }
+}
+

@@ -1,0 +1,132 @@
+.prada-lookbook-section {
+  padding: 5rem 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.lookbook-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.lookbook-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.lookbook-card {
+  position: relative;
+  overflow: hidden;
+  height: 480px;
+  background-color: var(--prada-black);
+}
+
+.lookbook-card.lookbook-large {
+  grid-column: span 2;
+  height: 580px;
+}
+
+.lookbook-card.lookbook-full {
+  grid-column: span 2;
+  height: 440px;
+}
+
+.lookbook-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.lookbook-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: brightness(0.9);
+}
+
+.lookbook-card:hover .lookbook-img {
+  transform: scale(1.04);
+  filter: brightness(0.8);
+}
+
+.lookbook-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 3.5rem;
+}
+
+.lookbook-content {
+  color: var(--prada-white);
+  max-width: 500px;
+}
+
+.lookbook-subtitle {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--prada-gray-200);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.lookbook-title {
+  font-size: 2rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+  color: var(--prada-white);
+}
+
+.lookbook-btn {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+.lookbook-card:hover .lookbook-btn {
+  opacity: 1;
+  background-color: var(--prada-white);
+  color: var(--prada-black);
+}
+
+@media (max-width: 900px) {
+  .lookbook-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .lookbook-card.lookbook-large,
+  .lookbook-card.lookbook-full {
+    grid-column: span 1;
+    height: 420px;
+  }
+  
+  .lookbook-card {
+    height: 380px;
+  }
+  
+  .lookbook-overlay {
+    padding: 2rem;
+  }
+  
+  .lookbook-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* === Skeleton Loading State === */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.lookbook-card-skeleton {
+  background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 0;
+  height: 480px;
+}

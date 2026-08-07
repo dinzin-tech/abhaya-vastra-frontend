@@ -1,19 +1,20 @@
+import React from 'react';
 import ProductCard from './ProductCard';
 
 const ProductGrid = ({ products, selectedSizes = [] }) => (
-  <div className="product-grid-container">
+  <div className="product-grid-container" style={{ minHeight: "350px" }}>
     <div className="
     product-grid
     grid
     gap-4
-    grid-cols-2        /* very small devices */
+    grid-cols-2        /* small devices */
     sm:grid-cols-2     /* small screen */
-    md:grid-cols-4     /* mobile/tablet: 4 items per row */
-    lg:grid-cols-3     /* desktop/laptop: 3 items per row */
+    md:grid-cols-4     /* tablet */
+    lg:grid-cols-3     /* desktop */
     ">
       {products.map((product, index) => (
         <ProductCard 
-          key={index} 
+          key={product.id || `product-${index}`} 
           product={product}
           selectedSizes={selectedSizes}
         />

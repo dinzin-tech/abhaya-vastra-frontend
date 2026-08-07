@@ -1,15 +1,27 @@
+/* Prada High-Fashion Signup Styling */
+@import '../LoginPage/LoginPage.css';
+
 .checkbox-group {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--prada-gray-800);
 }
 
 .checkbox-group input {
-  width: auto;
+  accent-color: var(--prada-black);
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
   cursor: pointer;
 }
 
 .checkbox-group label {
-    padding-top: 3px;
+  padding-top: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }

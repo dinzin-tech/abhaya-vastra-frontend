@@ -1,9 +1,91 @@
-.product-rating i {
-    font-size: small;
-    color: #FFC700;
-    margin-top: 0px;
-}
+/* Prada Editorial Video Shorts Styling */
 
 .video-shorts-section {
-    background: #fff;
+  padding: 60px 32px;
+  background-color: var(--prada-white, #ffffff);
+  border-top: 1px solid var(--prada-gray-200, #e5e5e5);
+}
+
+.video-shorts-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.prada-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--prada-gray-600, #666666);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.video-shorts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.video-short-card {
+  background: var(--prada-black, #000000);
+  border: 1px solid var(--prada-gray-200, #e5e5e5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.video-short-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  background-color: var(--prada-black, #000000);
+  overflow: hidden;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--prada-white, #ffffff);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.video-info-box {
+  padding: 16px 20px;
+  background: var(--prada-black, #000000);
+  color: var(--prada-white, #ffffff);
+  text-align: center;
+}
+
+.video-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
 }
