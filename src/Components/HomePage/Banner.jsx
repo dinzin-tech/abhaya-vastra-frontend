@@ -123,6 +123,16 @@ const Banner = () => {
     return FALLBACK_BANNERS[0].image_url;
   };
 
+  const getMobileImageUrl = (banner) => {
+    if (!banner) return FALLBACK_BANNERS[0].image_url;
+    if (banner.mobile_image_url) return banner.mobile_image_url;
+    if (banner.mobile_image) {
+      if (banner.mobile_image.startsWith("http")) return banner.mobile_image;
+      return `${IMAGE_BASE_URL}${banner.mobile_image}`;
+    }
+    return getImageUrl(banner);
+  };
+
   // Show text overlay only for fallback banners (API banners already have text in the image)
   const showTextOverlay = currentBanner?.isFallback !== false;
 
@@ -144,12 +154,18 @@ const Banner = () => {
             key={banner.id || index}
             className={`prada-hero-slide ${index === currentIndex ? "active" : ""}`}
           >
-            <img
-              src={getImageUrl(banner)}
-              alt={banner.title || "Editorial Campaign"}
-              className="prada-hero-image"
-              loading={index === 0 ? "eager" : "lazy"}
-            />
+            <picture>
+              <source
+                media="(max-width: 768px)"
+                srcSet={getMobileImageUrl(banner)}
+              />
+              <img
+                src={getImageUrl(banner)}
+                alt={banner.title || "Editorial Campaign"}
+                className="prada-hero-image"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </picture>
             <div className="prada-hero-overlay" />
           </div>
         ))}

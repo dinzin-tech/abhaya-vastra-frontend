@@ -33,10 +33,10 @@
 .orders-stats-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background: var(--prada-white);
   border: 1px solid var(--prada-gray-200);
-  padding: 24px;
+  padding: 20px 24px;
   margin-bottom: 32px;
 }
 
@@ -49,13 +49,13 @@
 
 .stat-value {
   font-family: var(--font-body);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--prada-black);
 }
 
 .stat-label {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--prada-gray-600);
   text-transform: uppercase;
@@ -63,15 +63,21 @@
   margin-top: 4px;
 }
 
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--prada-gray-200);
+}
+
 .orders-filter-bar {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 32px;
 }
 
 .filter-pill {
-  padding: 8px 18px;
+  padding: 8px 16px;
   border: 1px solid var(--prada-gray-300);
   background: var(--prada-white);
   font-size: 0.75rem;
@@ -81,6 +87,17 @@
   color: var(--prada-black);
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-count {
+  background: var(--prada-gray-200);
+  color: var(--prada-black);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.65rem;
 }
 
 .filter-pill.active, .filter-pill:hover {
@@ -89,38 +106,463 @@
   color: var(--prada-white);
 }
 
+.filter-pill.active .filter-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* === Order Card === */
 .order-card {
   background: var(--prada-white);
   border: 1px solid var(--prada-gray-200);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   padding: 24px;
+  transition: box-shadow 0.3s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.order-card--cancelled {
+  opacity: 0.75;
+}
+
+/* Card Header */
+.order-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--prada-gray-200);
+  margin-bottom: 20px;
+}
+
+.order-number-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-id-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--prada-gray-600);
+  letter-spacing: 0.1em;
+}
+
+.order-id-value {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--prada-black);
+  letter-spacing: 0.05em;
+}
+
+.order-date-text {
+  font-size: 0.78rem;
+  color: var(--prada-gray-600);
+  margin-top: 4px;
+  display: block;
+}
+
+.order-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.order-status-chip {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--prada-gray-100);
+  border: 1px solid var(--prada-gray-300);
+  color: var(--prada-black);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.payment-chip {
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.payment-completed {
+  background: #e6f4ea;
+  color: #137333;
+  border: 1px solid #ceebd6;
+}
+
+.payment-pending {
+  background: #fef7e0;
+  color: #b06000;
+  border: 1px solid #fde293;
+}
+
+.payment-failed {
+  background: #fce8e6;
+  color: #c5221f;
+  border: 1px solid #fad2cf;
+}
+
+/* === Status Stepper === */
+.order-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0 28px 0;
+  padding: 0 12px;
+  position: relative;
+}
+
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.stepper-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--prada-gray-300);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--prada-gray-600);
+  transition: all 0.3s ease;
+}
+
+.stepper-step.done .stepper-dot {
+  background: var(--prada-black);
+  border-color: var(--prada-black);
+  color: #fff;
+}
+
+.stepper-step.active .stepper-dot {
+  border-color: var(--prada-black);
+  background: #fff;
+}
+
+.dot-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--prada-black);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.8; }
+}
+
+.stepper-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--prada-gray-600);
+  margin-top: 8px;
+  white-space: nowrap;
+}
+
+.stepper-step.done .stepper-label,
+.stepper-step.active .stepper-label {
+  color: var(--prada-black);
+  font-weight: 700;
+}
+
+.stepper-line {
+  flex: 1;
+  height: 2px;
+  background: var(--prada-gray-200);
+  margin: 0 8px;
+  margin-bottom: 24px;
+  position: relative;
+  top: -7px;
+}
+
+.stepper-line.done {
+  background: var(--prada-black);
+}
+
+.stepper-cancelled {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fce8e6;
+  border: 1px solid #fad2cf;
+  color: #c5221f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 16px 0;
+}
+
+/* === Order Items === */
+.order-items-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--prada-gray-200);
+}
+
+.order-item-row:last-child {
+  border-bottom: none;
+}
+
+.item-img-wrap {
+  width: 64px;
+  height: 80px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--prada-gray-100);
+  border: 1px solid var(--prada-gray-200);
+}
+
+.order-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.item-qty-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 5px;
+}
+
+.order-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-item-name {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--prada-black);
+  margin: 0 0 6px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-item-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.item-meta-chip {
+  font-size: 0.68rem;
+  color: var(--prada-gray-600);
+  background: var(--prada-gray-100);
+  padding: 2px 8px;
+  border: 1px solid var(--prada-gray-200);
+}
+
+.write-review-chip-btn {
+  cursor: pointer;
+  background: #fff;
+  border-color: var(--prada-black);
+  color: var(--prada-black);
+  font-weight: 600;
+}
+
+.order-item-price {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--prada-black);
+  white-space: nowrap;
+}
+
+/* Summary & Actions */
+.order-summary-row {
+  background: var(--prada-gray-100);
+  padding: 14px 18px;
+  margin-top: 16px;
+  font-size: 0.8rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: var(--prada-gray-600);
+}
+
+.grand-total-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--prada-black);
+  padding-top: 8px;
+  border-top: 1px solid var(--prada-gray-300);
+  margin-top: 8px;
+}
+
+.order-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.order-btn-outline {
+  padding: 10px 18px;
+  border: 1px solid var(--prada-black);
+  background: #fff;
+  color: var(--prada-black);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.order-btn-outline:hover {
+  background: var(--prada-black);
+  color: #fff;
+}
+
+.order-btn-dark {
+  padding: 10px 18px;
+  border: 1px solid var(--prada-black);
+  background: var(--prada-black);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.order-btn-dark:hover {
+  background: #fff;
+  color: var(--prada-black);
 }
 
 /* === Mobile Overrides === */
 @media (max-width: 600px) {
   .orders-wrapper {
-    padding: 20px 12px !important;
+    padding: 16px 12px !important;
   }
 
   .orders-title {
-    font-size: 1.4rem !important;
+    font-size: 1.3rem !important;
     letter-spacing: 0.1em !important;
     word-break: break-word !important;
   }
 
   .orders-stats-bar {
     flex-wrap: wrap !important;
-    gap: 16px !important;
-    padding: 16px 12px !important;
+    gap: 12px !important;
+    padding: 14px 10px !important;
+  }
+
+  .stat-value {
+    font-size: 1.1rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.6rem !important;
+  }
+
+  .stat-divider {
+    display: none;
   }
 
   .order-card {
-    padding: 16px 12px !important;
+    padding: 14px 10px !important;
+    margin-bottom: 20px !important;
   }
 
-  .filter-pill {
-    padding: 6px 12px !important;
-    font-size: 0.7rem !important;
+  .order-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .order-badges {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .stepper-label {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .stepper-dot {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.65rem !important;
+  }
+
+  .stepper-line {
+    margin: 0 4px !important;
+  }
+
+  .item-img-wrap {
+    width: 52px !important;
+    height: 68px !important;
+  }
+
+  .order-item-name {
+    font-size: 0.8rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  .order-item-price {
+    font-size: 0.85rem !important;
+  }
+
+  .order-actions-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .order-btn-outline,
+  .order-btn-dark {
+    width: 100% !important;
+    text-align: center;
   }
 }
-

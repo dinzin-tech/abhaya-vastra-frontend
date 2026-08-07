@@ -17,7 +17,7 @@ const FALLBACK_SHORTS = [
   },
   {
     id: 3,
-    title: "PRADA FINE ACCESSORIES",
+    title: "ABHAYA VASTRA FINE ACCESSORIES",
     category: "LUXURY JEWELRY",
     video_url: "https://assets.mixkit.co/videos/preview/mixkit-woman-wearing-a-gold-necklace-41552-large.mp4"
   }
@@ -47,8 +47,8 @@ const VideoShorts = () => {
   return (
     <section className="video-shorts-section section-container">
       <div className="video-shorts-header">
-        <span className="prada-eyebrow">EDITORIAL RUNWAY & LOOKS</span>
-        <h2 className="section-heading">PRADA CAMPAIGN SHORTS</h2>
+        <span className="brand-eyebrow">EDITORIAL RUNWAY & LOOKS</span>
+        <h2 className="section-heading">ABHAYA VASTRA CAMPAIGN SHORTS</h2>
       </div>
 
       <div className="video-shorts-grid">
@@ -65,7 +65,7 @@ const VideoShorts = () => {
               >
                 <source src={item.video_url || item.url} type="video/mp4" />
               </video>
-              <div className="video-badge">{item.category || "PRADA EDITORIAL"}</div>
+              <div className="video-badge">{item.category || "ABHAYA VASTRA EDITORIAL"}</div>
             </div>
             <div className="video-info-box">
               <p className="video-title">{item.title}</p>
