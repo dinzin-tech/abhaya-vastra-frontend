@@ -49,7 +49,7 @@ const Banner = () => {
   const carouselRef = useRef(null);
 
   const IMAGE_BASE_URL =
-    import.meta.env.VITE_STORAGE_BASE_URL || "http://127.0.0.1:8000/storage/";
+    import.meta.env.VITE_STORAGE_BASE_URL || "/storage/";
 
   useEffect(() => {
     API.get("/banner")
