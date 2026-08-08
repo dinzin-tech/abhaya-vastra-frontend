@@ -171,34 +171,61 @@
 /* === Responsive === */
 @media (max-width: 768px) {
   .prada-hero-banner-section {
-    height: 65vh;
-    min-height: 420px;
+    height: auto;
+    min-height: auto;
+    background-color: var(--prada-black, #000000);
+  }
+
+  .prada-hero-banner-container {
+    height: auto;
+  }
+
+  .prada-hero-slide {
+    position: relative;
+    height: auto;
+    opacity: 0;
+    display: none;
+    transform: none;
+  }
+
+  .prada-hero-slide.active {
+    opacity: 1;
+    display: block;
+    transform: none;
+  }
+
+  .prada-hero-image {
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain;
+    display: block;
   }
 
   .prada-hero-content-container {
-    bottom: 52px;
-    left: 24px;
-    right: 24px;
+    bottom: 36px;
+    left: 20px;
+    right: 20px;
     max-width: 100%;
   }
 
   .prada-hero-title {
-    font-size: 1.8rem;
-    letter-spacing: 0.08em;
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
   }
 
   .prada-hero-subtitle {
-    font-size: 0.72rem;
-    margin-bottom: 20px;
+    font-size: 0.68rem;
+    margin-bottom: 16px;
   }
 
   .prada-hero-cta {
-    padding: 12px 24px;
-    font-size: 0.68rem;
+    padding: 10px 20px;
+    font-size: 0.65rem;
   }
 
   .prada-hero-indicators {
-    left: 24px;
-    bottom: 16px;
+    left: 20px;
+    bottom: 12px;
   }
 }
