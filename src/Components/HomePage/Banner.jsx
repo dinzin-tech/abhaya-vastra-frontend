@@ -156,6 +156,10 @@ const Banner = () => {
           >
             <picture>
               <source
+                media="(min-width: 769px)"
+                srcSet={getImageUrl(banner)}
+              />
+              <source
                 media="(max-width: 768px)"
                 srcSet={getMobileImageUrl(banner)}
               />
