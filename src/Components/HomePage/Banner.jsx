@@ -46,21 +46,10 @@ const Banner = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth <= 768 : false
-  );
   const carouselRef = useRef(null);
 
   const IMAGE_BASE_URL =
     import.meta.env.VITE_STORAGE_BASE_URL || "/storage/";
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     API.get("/banner")
@@ -77,28 +66,9 @@ const Banner = () => {
       });
   }, []);
 
-  const rawBanners = useFallback || banners.length === 0
+  const activeBanners = useFallback || banners.length === 0
     ? FALLBACK_BANNERS
     : banners;
-
-  // Strictly separate desktop vs mobile banners:
-  // On Mobile: Only show banners with uploaded mobile_image
-  // On Desktop: Only show banners with uploaded desktop image
-  const activeBanners = React.useMemo(() => {
-    if (useFallback || rawBanners.length === 0) return FALLBACK_BANNERS;
-
-    if (isMobile) {
-      const mobileBanners = rawBanners.filter(
-        (b) => Boolean(b.mobile_image_url || b.mobile_image)
-      );
-      return mobileBanners.length > 0 ? mobileBanners : rawBanners;
-    } else {
-      const desktopBanners = rawBanners.filter(
-        (b) => Boolean(b.image_url || b.image)
-      );
-      return desktopBanners.length > 0 ? desktopBanners : rawBanners;
-    }
-  }, [rawBanners, isMobile, useFallback]);
 
   // Auto-slide every 6 seconds
   useEffect(() => {
@@ -183,8 +153,14 @@ const Banner = () => {
             className={`prada-hero-slide ${index === currentIndex ? "active" : ""}`}
           >
             <picture>
+              {(banner.mobile_image_url || banner.mobile_image) && (
+                <source
+                  media="(max-width: 768px)"
+                  srcSet={getMobileImageUrl(banner)}
+                />
+              )}
               <img
-                src={isMobile ? getMobileImageUrl(banner) : getImageUrl(banner)}
+                src={getImageUrl(banner)}
                 alt={banner.title || "Editorial Campaign"}
                 className="prada-hero-image"
                 loading={index === 0 ? "eager" : "lazy"}
