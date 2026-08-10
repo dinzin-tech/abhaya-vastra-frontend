@@ -26,7 +26,7 @@ const CheckoutPage = () => {
     
   });
   const [discount, setDiscount] = useState(0);
-  const [shippingCharge, setShippingCharge] = useState(0);
+  const [shippingCharge, setShippingCharge] = useState(100);
   const [isCheckingShipping, setIsCheckingShipping] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     try {
       // First, get the pickup pincode from the backend
       const configResponse = await API.get('/config');
-      const pickupPincode = configResponse?.data?.pickup_pincode || '560064'; // Default to Delhi pincode if not set
+      const pickupPincode = configResponse?.data?.pickup_pincode || '560064';
       
       const response = await API.post('/shiprocket/check-serviceability', {
         pickup_pincode: pickupPincode,
@@ -73,18 +73,17 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
       if (response.data && response.data.success) {
         const data = response.data.data;
         if (data && data.available_courier_companies && data.available_courier_companies.length > 0) {
-          // Get the first available courier (usually the cheapest)
           const courier = data.available_courier_companies[0];
-          const shippingCharge = parseFloat(courier.rate);
+          const shippingCharge = 100; // Flat ₹100 shipping charge for all orders
           
-          setShippingCharge(shippingCharge);
+          setShippingCharge(100);
           setDeliveryInfo({
             days: courier.etd || '3-5',
             courier: courier.courier_name || 'Standard'
           });
           
           if (showToast) {
-            toast.success(`Delivery available! ₹${shippingCharge} shipping charge`);
+            toast.success('Standard shipping charge: ₹100');
           }
         } else {
           console.warn('No courier companies available for this pincode');
@@ -95,8 +94,8 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
       }
     } catch (error) {
       console.error('Error checking shipping:', error);
-      // Set a default shipping charge
-      const defaultCharge = 50;
+      // Set default flat shipping charge of ₹100
+      const defaultCharge = 100;
       setShippingCharge(defaultCharge);
       setDeliveryInfo({
         days: '3-5',
@@ -104,7 +103,7 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
       });
       
       if (showToast) {
-        toast.info(`Using standard shipping rate: ₹${defaultCharge}`);
+        toast.info(`Standard shipping rate: ₹${defaultCharge}`);
       }
     } finally {
       setIsCheckingShipping(false);
