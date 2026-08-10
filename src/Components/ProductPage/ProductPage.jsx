@@ -551,7 +551,6 @@ import { useParams, useLocation, Link } from "react-router-dom";
 import API from "../../api";
 import "./ProductPage.css";
 import { Helmet } from "react-helmet-async";
-import TShirtDesignModal from "./TShirtDesignModal";
 
 const ProductPage = () => {
   const { name } = useParams();
@@ -710,6 +709,24 @@ const ProductPage = () => {
     };
     fetchProductDetails();
   }, [name, customizableFromState]);
+
+  // Send Google Analytics view_item event when product details load
+  useEffect(() => {
+    if (product && typeof window.gtag === "function") {
+      window.gtag("event", "view_item", {
+        currency: "INR",
+        value: Number(product.discounted_price || product.price || 0),
+        items: [
+          {
+            item_id: String(product.id || ""),
+            item_name: product.name || "",
+            item_category: product.category || "Jewellery",
+            price: Number(product.discounted_price || product.price || 0),
+          },
+        ],
+      });
+    }
+  }, [product]);
 
   // === Reviews Eligibility & Form Handlers ===
   useEffect(() => {
@@ -1019,39 +1036,6 @@ const ProductPage = () => {
               </>
           )}
 
-          {/* === Custom T-Shirt Design Studio Trigger === */}
-          {isMensTShirt && (
-            <div className="product-custom-design-row" style={{ marginTop: '20px', marginBottom: '20px' }}>
-              <button
-                className={`custom-design-btn ${customDesignData ? 'applied' : ''}`}
-                onClick={() => setShowDesignModal(true)}
-                style={{
-                  width: '100%',
-                  height: '46px',
-                  borderRadius: '12px',
-                  border: '1.5px solid #6366f1',
-                  background: customDesignData ? '#f5f3ff' : '#ffffff',
-                  color: '#6366f1',
-                  fontWeight: '700',
-                  fontSize: '0.92rem',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <i className="fa-solid fa-paintbrush" />
-                {customDesignData ? 'Edit Custom Print Design' : 'Design Your Custom T-Shirt'}
-              </button>
-              {customDesignData && (
-                <div style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: '700', marginTop: '6px', textAlign: 'center' }}>
-                  ✓ Custom Print Applied! Print details will be sent with your order.
-                </div>
-              )}
-            </div>
-          )}
 
           {/* === Buttons Row === */}
           <div className="product-options-row">
@@ -1320,16 +1304,6 @@ const ProductPage = () => {
       )}
     </div>
 
-    {showDesignModal && (
-      <TShirtDesignModal
-        product={product}
-        selectedColor={selectedColor}
-        selectedSize={selectedSize}
-        garmentImage={mainImage}
-        onSave={(data) => setCustomDesignData(data)}
-        onClose={() => setShowDesignModal(false)}
-      />
-    )}
 
     {copiedMsg && <div className="copied-toast">{copiedMsg}</div>}
   </>

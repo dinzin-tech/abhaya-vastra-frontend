@@ -6,7 +6,6 @@ import HomePage from "./Components/HomePage/HomePage";
 import OrdersPage from "./Components/OrdersPage/OrderPage";
 import MenPage from "./Components/MenPage/MenPage";
 import WoMenPage from "./Components/WoMenPage/WoMenPage";
-import CustomizationPage from "./Components/CustomizationPage/CustomizationPage";
 import ContactPage from "./Components/ContactPage/ContactPage";
 import CategoryPage from "./Components/CategoryPage/CategoryPage";
 import CheckoutPage from "./Components/CheckoutPage/CheckoutPage";
@@ -44,6 +43,13 @@ const ScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+
+    // Track SPA pageviews in Google Analytics
+    if (typeof window.gtag === "function") {
+      window.gtag("config", "G-YSXLB08S85", {
+        page_path: pathname + search,
+      });
+    }
   }, [pathname, search]);
 
   return null;
@@ -75,7 +81,6 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/orders" element={<OrdersPage />} />
-              <Route path="/customization" element={<CustomizationPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/category/:category?" element={<CategoryPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

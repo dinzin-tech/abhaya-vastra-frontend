@@ -170,7 +170,13 @@ const Header = () => {
               <NavLink to="all-products" className="dropdown-link">
                 All Products
               </NavLink>
-              {categories.map((cat) => (
+              {categories
+                .filter((cat) => {
+                  const name = (cat.name || "").toLowerCase();
+                  const slug = (cat.slug || "").toLowerCase();
+                  return !name.includes("custom") && !slug.includes("custom");
+                })
+                .map((cat) => (
                 cat.slug ? (
                   <NavLink 
                     key={cat.id}

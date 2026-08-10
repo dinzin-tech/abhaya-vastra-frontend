@@ -29,7 +29,7 @@ const FALLBACK_LOOKBOOKS = [
     subtitle: "CUSTOM MADE LUXURY",
     image_url:
       "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800&auto=format&fit=crop",
-    link: "/customization",
+    link: "/all-products",
     size: "medium",
   },
   {

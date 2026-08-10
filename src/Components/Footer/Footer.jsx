@@ -47,7 +47,6 @@ const Footer = () => (
           <li><NavLink to="/best-sellers">Best Sellers</NavLink></li>
           <li><NavLink to="/whats-new">What's New</NavLink></li>
           <li><NavLink to="/featured-products">Featured Collections</NavLink></li>
-          <li><NavLink to="/customization">Custom Studio</NavLink></li>
           <li><NavLink to="/about">About Abhaya Vastra</NavLink></li>
         </ul>
       </div>

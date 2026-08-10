@@ -39,6 +39,8 @@ const CheckoutPage = () => {
   const [walletMoneyToUse, setWalletMoneyToUse] = useState(0);
   const [applyingCoupon, setApplyingCoupon] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [availableCoupons, setAvailableCoupons] = useState([]);
+  const [showOffersModal, setShowOffersModal] = useState(false);
 
   // COD temporarily disabled
   // const [paymentMethod, setPaymentMethod] = useState("cod");
@@ -150,6 +152,21 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
       fetchWalletBalance();
     }
   }, [isLoggedIn]);
+
+  // Fetch active available coupons
+  useEffect(() => {
+    const fetchActiveCoupons = async () => {
+      try {
+        const response = await API.get('/coupon/active');
+        if (response.data?.success) {
+          setAvailableCoupons(response.data.data || []);
+        }
+      } catch (error) {
+        console.error('Error fetching active coupons:', error);
+      }
+    };
+    fetchActiveCoupons();
+  }, []);
   
   const fetchWalletBalance = async () => {
     try {
@@ -162,16 +179,18 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     }
   };
 
-  const handleApplyCoupon = async () => {
-    if (!formData.coupon.trim()) {
+  const handleApplyCoupon = async (codeToApply = null) => {
+    const targetCode = (typeof codeToApply === 'string' ? codeToApply : formData.coupon).trim().toUpperCase();
+    if (!targetCode) {
       toast.error("Please enter a coupon code");
       return;
     }
 
+    setFormData(prev => ({ ...prev, coupon: targetCode }));
     setApplyingCoupon(true);
     try {
       const response = await API.post('/coupon/check', {
-        code: formData.coupon,
+        code: targetCode,
         amount: subtotal,
         user_id: user?.id || null
       });
@@ -180,7 +199,8 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
         const { discount, code, type, value } = response.data.data;
         setDiscount(discount);
         setAppliedCoupon({ code, type, value, discount });
-        toast.success(`Coupon applied! ₹${discount} off`);
+        toast.success(`🎉 Coupon "${code}" applied! Saved ₹${discount}`);
+        setShowOffersModal(false);
       } else {
         setDiscount(0);
         setAppliedCoupon(null);
@@ -518,39 +538,125 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
             </div>
           </div>
 
-          <h3>Apply Coupon</h3>
-          <div className="coupon-container">
+          {/* Modern Luxury Coupon Card */}
+          <div className="coupon-card">
+            <div className="coupon-card-header">
+              <div className="coupon-title-wrapper">
+                <svg className="coupon-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                  <line x1="7" y1="7" x2="7.01" y2="7" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+                <h3 className="coupon-section-title">Apply Promo Code</h3>
+              </div>
+              {availableCoupons.length > 0 && !appliedCoupon && (
+                <button 
+                  type="button" 
+                  className="toggle-offers-btn"
+                  onClick={() => setShowOffersModal(!showOffersModal)}
+                >
+                  <span className="sparkle-icon">✨</span>
+                  {availableCoupons.length} {availableCoupons.length === 1 ? 'Offer' : 'Offers'} Available
+                  <span className={`chevron ${showOffersModal ? 'open' : ''}`}>▼</span>
+                </button>
+              )}
+            </div>
+
             {appliedCoupon ? (
-              <div className="applied-coupon">
-                <span>Coupon Applied: {appliedCoupon.code} (-₹{appliedCoupon.discount})</span>
+              <div className="applied-coupon-box">
+                <div className="applied-coupon-info">
+                  <div className="coupon-success-badge">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div className="applied-coupon-details">
+                    <span className="applied-code">{appliedCoupon.code}</span>
+                    <span className="applied-savings">Saved ₹{Number(appliedCoupon.discount).toFixed(2)} on this order</span>
+                  </div>
+                </div>
                 <button 
                   onClick={handleRemoveCoupon}
-                  className="remove-coupon-btn"
+                  className="remove-coupon-chip"
                   type="button"
+                  title="Remove coupon"
                 >
                   Remove
                 </button>
               </div>
             ) : (
-              <>
-                <input
-                  type="text"
-                  placeholder="Coupon Code"
-                  name="coupon"
-                  value={formData.coupon}
-                  onChange={handleChange}
-                  className="coupon-input"
-                  disabled={applyingCoupon}
-                />
-                <button 
-                  onClick={handleApplyCoupon} 
-                  className="apply-btn"
-                  disabled={!formData.coupon.trim() || applyingCoupon}
-                  type="button"
-                >
-                  {applyingCoupon ? 'Applying...' : 'Apply'}
-                </button>
-              </>
+              <div className="coupon-input-wrapper">
+                <div className="coupon-input-field-container">
+                  <input
+                    type="text"
+                    placeholder="ENTER COUPON CODE"
+                    name="coupon"
+                    value={formData.coupon}
+                    onChange={(e) => {
+                      handleChange({
+                        target: {
+                          name: 'coupon',
+                          value: e.target.value.toUpperCase()
+                        }
+                      });
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (formData.coupon.trim() && !applyingCoupon) {
+                          handleApplyCoupon();
+                        }
+                      }
+                    }}
+                    className="coupon-input-modern"
+                    disabled={applyingCoupon}
+                    autoComplete="off"
+                  />
+                  <button 
+                    onClick={() => handleApplyCoupon()} 
+                    className={`apply-coupon-btn ${formData.coupon.trim() ? 'active' : ''}`}
+                    disabled={!formData.coupon.trim() || applyingCoupon}
+                    type="button"
+                  >
+                    {applyingCoupon ? (
+                      <span className="btn-loading-spinner"></span>
+                    ) : (
+                      'APPLY'
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Active/Available Coupon Offers Cards */}
+            {showOffersModal && !appliedCoupon && availableCoupons.length > 0 && (
+              <div className="available-offers-list">
+                <div className="offers-list-header">AVAILABLE COUPONS FOR YOU</div>
+                {availableCoupons.map((c) => {
+                  const isEligible = subtotal >= Number(c.min_cart_amount);
+                  return (
+                    <div key={c.id} className={`offer-card ${!isEligible ? 'ineligible' : ''}`}>
+                      <div className="offer-card-left">
+                        <div className="offer-badge-code">{c.code}</div>
+                        <div className="offer-desc">
+                          {c.type === 'percentage' ? `${c.value}% OFF` : `₹${c.value} OFF`} 
+                          {Number(c.min_cart_amount) > 0 ? ` on orders above ₹${c.min_cart_amount}` : ''}
+                        </div>
+                        {!isEligible && (
+                          <div className="offer-min-hint">Add ₹{(Number(c.min_cart_amount) - subtotal).toFixed(0)} more to unlock</div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="apply-offer-chip"
+                        disabled={!isEligible || applyingCoupon}
+                        onClick={() => handleApplyCoupon(c.code)}
+                      >
+                        {isEligible ? 'APPLY' : 'LOCKED'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
           

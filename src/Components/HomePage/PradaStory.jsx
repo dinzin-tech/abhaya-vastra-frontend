@@ -15,8 +15,8 @@ const PradaStory = () => {
             "Fashion is a language created in an instant to decode any given moment. Each piece is designed to reflect conceptual identity, precision tailoring, and timeless elegance."
           </p>
           <div className="story-actions">
-            <Link to="/customization" className="prada-btn-primary">
-              EXPLORE CUSTOM TAILORING
+            <Link to="/all-products" className="prada-btn-primary">
+              EXPLORE OUR COLLECTION
             </Link>
             <Link to="/about" className="prada-btn-secondary">
               OUR BRAND HERITAGE
