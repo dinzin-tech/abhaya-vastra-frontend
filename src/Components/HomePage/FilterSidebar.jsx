@@ -95,7 +95,18 @@ const FilterSidebar = ({
           isOpen ? "open" : "collapsed"
         } ${pageType === "customization" ? "hidden" : ""}`}
       >
-        <h3>Filters</h3>
+        <div className="sidebar-header">
+          <h3>Filters</h3>
+          {isMobile && (
+            <button 
+              className="mobile-close-btn" 
+              onClick={() => setIsOpen(false)}
+              aria-label="Close filters"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         <div className="filter-section">
           {!hideOtherFilters && (
@@ -104,21 +115,27 @@ const FilterSidebar = ({
               <div className="filter-group">
                 <h4>Category</h4>
                 <div className="checkbox-group">
-                  {categories.map((cat) => (
-                    <label key={cat.id}>
-                      <input
-                        type="checkbox"
-                        checked={category.includes(cat.name)}
-                        onChange={(e) => {
-                          const newCategory = e.target.checked
-                            ? [...category, cat.name]
-                            : category.filter((c) => c !== cat.name);
-                          onFilterChange("category", newCategory);
-                        }}
-                      />
-                      <span>{cat.name}</span>
-                    </label>
-                  ))}
+                  {categories
+                    .filter((cat) => {
+                      const name = (cat.name || "").toLowerCase();
+                      const slug = (cat.slug || "").toLowerCase();
+                      return !name.includes("custom") && !slug.includes("custom");
+                    })
+                    .map((cat) => (
+                      <label key={cat.id} className="category-checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={category.includes(cat.name)}
+                          onChange={(e) => {
+                            const newCategory = e.target.checked
+                              ? [...category, cat.name]
+                              : category.filter((c) => c !== cat.name);
+                            onFilterChange("category", newCategory);
+                          }}
+                        />
+                        <span>{cat.name}</span>
+                      </label>
+                    ))}
                 </div>
               </div>
 

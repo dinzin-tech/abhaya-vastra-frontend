@@ -166,6 +166,17 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     };
     fetchActiveCoupons();
   }, []);
+
+  // Auto-apply coupon code if passed in URL query param ?coupon=CODE
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const couponFromUrl = params.get('coupon');
+    if (couponFromUrl) {
+      const code = couponFromUrl.trim().toUpperCase();
+      setFormData(prev => ({ ...prev, coupon: code }));
+      handleApplyCoupon(code);
+    }
+  }, [location.search]);
   
   const fetchWalletBalance = async () => {
     try {
@@ -179,7 +190,13 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
   };
 
   const handleApplyCoupon = async (codeToApply = null) => {
-    const targetCode = (typeof codeToApply === 'string' ? codeToApply : formData.coupon).trim().toUpperCase();
+    let targetCode = '';
+    if (typeof codeToApply === 'string' && codeToApply.trim()) {
+      targetCode = codeToApply.trim().toUpperCase();
+    } else if (formData.coupon && typeof formData.coupon === 'string') {
+      targetCode = formData.coupon.trim().toUpperCase();
+    }
+
     if (!targetCode) {
       toast.error("Please enter a coupon code");
       return;
@@ -196,14 +213,15 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
 
       if (response.data.success) {
         const { discount, code, type, value } = response.data.data;
-        setDiscount(discount);
-        setAppliedCoupon({ code, type, value, discount });
-        toast.success(`🎉 Coupon "${code}" applied! Saved ₹${discount}`);
+        const numericDiscount = Number(discount) || 0;
+        setDiscount(numericDiscount);
+        setAppliedCoupon({ code, type, value, discount: numericDiscount });
+        toast.success(`🎉 Coupon "${code}" applied! Saved ₹${numericDiscount.toFixed(2)}`);
         setShowOffersModal(false);
       } else {
         setDiscount(0);
         setAppliedCoupon(null);
-        toast.error(response.data.message || 'Invalid coupon');
+        toast.error(response.data.message || 'Invalid coupon code');
       }
     } catch (error) {
       console.error('Error applying coupon:', error);
@@ -479,26 +497,26 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
     }
   };
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const pointsDiscount = pointsToUse * walletBalance.point_value;
-  const totalDiscount = discount + walletMoneyToUse + pointsDiscount;
-  const total = Math.max(0, subtotal - totalDiscount + shippingCharge);
+  const subtotal = cartItems.reduce((acc, item) => acc + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
+  const pointsDiscount = (Number(pointsToUse) || 0) * (Number(walletBalance?.point_value) || 1);
+  const totalDiscount = (Number(discount) || 0) + (Number(walletMoneyToUse) || 0) + pointsDiscount;
+  const total = Math.max(0, subtotal - totalDiscount + (Number(shippingCharge) || 0));
 
   // Update wallet money when discount changes
   useEffect(() => {
     if (useWalletMoney) {
-      const afterCoupon = subtotal - discount;
-      const maxWalletUse = Math.min(walletBalance.wallet_balance, afterCoupon);
+      const afterCoupon = subtotal - (Number(discount) || 0);
+      const maxWalletUse = Math.min(Number(walletBalance?.wallet_balance) || 0, afterCoupon);
       setWalletMoneyToUse(maxWalletUse);
     }
-  }, [discount, subtotal, useWalletMoney, walletBalance.wallet_balance]);
+  }, [discount, subtotal, useWalletMoney, walletBalance?.wallet_balance]);
 
   return (
     <div className="checkout-page">
       <h1 className="title">Checkout</h1>
       <div className="checkout-grid">
         <div className="form-card">
-          <h2>Shipping Details Himanshu</h2>
+          <h2>Shipping & Delivery Details</h2>
           <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
           <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required disabled={isLoggedIn} />
           <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required />
@@ -694,42 +712,6 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
             </div>
           )}
 
-          {/* 🚫 Payment Method temporarily disabled (COD commented)
-          <h3>Payment Method</h3>
-          <div className="payment-methods">
-            <label className="payment-option">
-              <input 
-                type="radio" 
-                name="payment" 
-                value="cod" 
-                checked={paymentMethod === "cod"} 
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              />
-              <span>Cash on Delivery (COD)</span>
-            </label>
-            <label className="payment-option">
-              <input 
-                type="radio" 
-                name="payment" 
-                value="razorpay" 
-                checked={paymentMethod === "razorpay"} 
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              />
-              <span>Pay Online (Razorpay)</span>
-            </label>
-          </div>
-          */}
-
-          {WHATSAPP_MODE ? (
-            <button className="whatsapp-order-btn" onClick={handleWhatsAppOrder}>
-              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.85L0 24l6.335-1.505A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.034-1.388l-.36-.214-3.762.894.953-3.67-.235-.376A9.783 9.783 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
-              Order via WhatsApp
-            </button>
-          ) : (
-            <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading}>
-              {loading ? "Processing..." : "Place Order"}
-            </button>
-          )}
         </div>
 
         <div className="summary-card">
@@ -744,30 +726,60 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
                       <p className="item-name">{item.name}</p>
                       {item.selectedSize && <p className="item-size">Size: {item.selectedSize}</p>}
                       <p className="item-quantity">Qty: {item.quantity}</p>
-                      <p className="item-price">Rs. {(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="item-price">₹{(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </li>
                 ))}
               </ul>
-              <hr />
-              <div className="order-summary-row">
-                <span>Subtotal</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+              <div className="summary-breakdown">
+                <div className="order-summary-row">
+                  <span>Subtotal</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
+                </div>
+                <div className="order-summary-row">
+                  <span>Shipping</span>
+                  <span>
+                    {isCheckingShipping ? (
+                      <span className="checking-shipping">Checking...</span>
+                    ) : (
+                      `₹${shippingCharge.toFixed(2)}`
+                    )}
+                  </span>
+                </div>
+                {discount > 0 && (
+                  <div className="order-summary-row discount">
+                    <span>Coupon Discount ({appliedCoupon?.code})</span>
+                    <span>- ₹{discount.toFixed(2)}</span>
+                  </div>
+                )}
+                {walletMoneyToUse > 0 && (
+                  <div className="order-summary-row discount">
+                    <span>Wallet Money Used</span>
+                    <span>- ₹{walletMoneyToUse.toFixed(2)}</span>
+                  </div>
+                )}
+                {pointsToUse > 0 && (
+                  <div className="order-summary-row discount">
+                    <span>Loyalty Points Used ({pointsToUse})</span>
+                    <span>- ₹{pointsDiscount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="order-summary-row total">
+                  <span>Total to Pay</span>
+                  <span>₹{total.toFixed(2)}</span>
+                </div>
               </div>
-              <div className="order-summary-row">
-                <span>Shipping</span>
-                <span>
-                  {isCheckingShipping ? (
-                    <span className="checking-shipping">Checking...</span>
-                  ) : (
-                    `₹${shippingCharge.toFixed(2)}`
-                  )}
-                </span>
-              </div>
-              {discount > 0 && <div className="summary-row discount"><span>Coupon Discount:</span><span>-Rs. {discount.toFixed(2)}</span></div>}
-              {walletMoneyToUse > 0 && <div className="summary-row discount"><span>Wallet Money:</span><span>-Rs. {walletMoneyToUse.toFixed(2)}</span></div>}
-              {pointsToUse > 0 && <div className="summary-row discount"><span>Loyalty Points ({pointsToUse}):</span><span>-Rs. {pointsDiscount.toFixed(2)}</span></div>}
-              <div className="summary-row total"><span>Total to Pay:</span><span>Rs. {total.toFixed(2)}</span></div>
+
+              {WHATSAPP_MODE ? (
+                <button className="whatsapp-order-btn" onClick={handleWhatsAppOrder}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.85L0 24l6.335-1.505A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.034-1.388l-.36-.214-3.762.894.953-3.67-.235-.376A9.783 9.783 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+                  Order via WhatsApp
+                </button>
+              ) : (
+                <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading}>
+                  {loading ? "Processing..." : "Place Order"}
+                </button>
+              )}
             </>
           ) : (
             <p className="empty">Your cart is empty.</p>

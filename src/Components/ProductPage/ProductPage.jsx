@@ -552,6 +552,37 @@ import API from "../../api";
 import "./ProductPage.css";
 import { Helmet } from "react-helmet-async";
 
+const getColorCss = (colorStr) => {
+  if (!colorStr) return '#1a1a1a';
+  const str = String(colorStr).toLowerCase().trim();
+  if (str.startsWith('#') || str.startsWith('rgb')) return str;
+  
+  const map = {
+    'black': '#000000',
+    'white': '#ffffff',
+    'red': '#dc2626',
+    'blue': '#2563eb',
+    'green': '#10b981',
+    'yellow': '#eab308',
+    'gold': '#d4af37',
+    'silver': '#c0c0c0',
+    'grey': '#6b7280',
+    'gray': '#6b7280',
+    'pink': '#ec4899',
+    'purple': '#a855f7',
+    'brown': '#78350f',
+    'navy': '#1e3a8a',
+    'maroon': '#800000',
+    'orange': '#f97316',
+    'beige': '#f5f5dc',
+  };
+
+  for (const [key, val] of Object.entries(map)) {
+    if (str.includes(key)) return val;
+  }
+  return '#1a1a1a';
+};
+
 const ProductPage = () => {
   const { name } = useParams();
   const location = useLocation();
@@ -999,20 +1030,44 @@ const ProductPage = () => {
 
           {!isCustomizable && (
               <>
-                {product.colors && (
+                {product.colors && product.colors.length > 0 && (
                   <>
-                    <p className="option-title">Color:</p>
-                    <div className="options-container">
-                      {product.colors.map((color) => (
-                        <button
-                          key={color.name || color}
-                          className={`color-button ${
-                            selectedColor === (color.name || color) ? 'selected' : ''
-                          }`}
-                          style={{ backgroundColor: color.hex || color }}
-                          onClick={() => setSelectedColor(color.name || color)}
-                        />
-                      ))}
+                    <p className="option-title">
+                      Color: <span style={{ fontWeight: '600', textTransform: 'capitalize', color: '#1a1a1a' }}>{selectedColor}</span>
+                    </p>
+                    <div className="options-container color-options-container" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
+                      {product.colors.map((colorObj, idx) => {
+                        const colorName = typeof colorObj === 'object' ? (colorObj.color || colorObj.name || '') : String(colorObj);
+                        const colorCss = getColorCss(colorName);
+                        const isSelected = selectedColor?.toLowerCase() === colorName?.toLowerCase();
+
+                        return (
+                          <button
+                            key={colorName || idx}
+                            title={colorName}
+                            className={`color-button ${isSelected ? 'selected' : ''}`}
+                            style={{
+                              backgroundColor: colorCss,
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '50%',
+                              border: isSelected ? '2px solid #1a1a1a' : '1px solid #d1d5db',
+                              outline: isSelected ? '2px solid #c9a96e' : 'none',
+                              outlineOffset: '2px',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                              boxShadow: colorCss.toLowerCase() === '#ffffff' ? 'inset 0 0 0 1px #d1d5db' : 'none'
+                            }}
+                            onClick={() => {
+                              setSelectedColor(colorName);
+                              if (typeof colorObj === 'object' && colorObj.images && colorObj.images.length > 0) {
+                                setDisplayImages(colorObj.images);
+                                setMainImage(colorObj.images[0]);
+                              }
+                            }}
+                          />
+                        );
+                      })}
                     </div>
                   </>
                 )}
