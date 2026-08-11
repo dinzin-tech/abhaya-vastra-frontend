@@ -631,6 +631,10 @@ const ProductPage = () => {
 
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  // Combo product size states
+  const [selectedMaleSize, setSelectedMaleSize] = useState("");
+  const [selectedFemaleSize, setSelectedFemaleSize] = useState("");
+
   const [displayImages, setDisplayImages] = useState([]);
   const [mainImage, setMainImage] = useState("");
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -652,6 +656,18 @@ const ProductPage = () => {
         discountedPrice: product?.total_price || product?.price || 0,
       };
     }
+    if (product.is_combo) {
+      const selectedColorId = product.colors?.find(
+        (c) => c.color === selectedColor
+      )?.id;
+      const variant = product.variants.find(
+        (v) => !selectedColorId || v.color_id === selectedColorId
+      ) || product.variants[0];
+      return {
+        price: variant?.price || product.price || 0,
+        discountedPrice: variant?.total_price || variant?.price || product.price || 0,
+      };
+    }
     const selectedColorId = product.colors?.find(
       (c) => c.color === selectedColor
     )?.id;
@@ -661,13 +677,25 @@ const ProductPage = () => {
         (!selectedColorId || v.color_id === selectedColorId)
     );
     return {
-      price: variant?.price || product.price,
-      discountedPrice: variant?.total_price || variant?.price || product.price,
+      price: variant?.price || product.price || 0,
+      discountedPrice: variant?.total_price || variant?.price || product.price || 0,
     };
   };
 
   const getAvailableStock = () => {
     if (isCustomizable || !product?.variants) return 999;
+    if (product.is_combo) {
+      if (product.variants && product.variants.length > 0) {
+        const selectedColorId = product.colors?.find(
+          (c) => c.color === selectedColor
+        )?.id;
+        const matchingVariants = product.variants.filter(
+          (v) => !selectedColorId || v.color_id === selectedColorId
+        );
+        return matchingVariants.reduce((sum, v) => sum + (v.stock || 0), 0) || 999;
+      }
+      return product.total_stock || 999;
+    }
     const selectedColorId = product.colors?.find(
       (c) => c.color === selectedColor
     )?.id;
@@ -677,6 +705,19 @@ const ProductPage = () => {
         (!selectedColorId || v.color_id === selectedColorId)
     );
     return variant?.stock || 0;
+  };
+
+  const parseComboSizes = (sizes) => {
+    if (Array.isArray(sizes)) return sizes;
+    if (typeof sizes === "string") {
+      try {
+        const parsed = JSON.parse(sizes);
+        if (Array.isArray(parsed)) return parsed;
+      } catch {
+        return sizes.split(",").map((s) => s.trim()).filter(Boolean);
+      }
+    }
+    return [];
   };
 
   const availableStock = getAvailableStock();
@@ -1072,24 +1113,83 @@ const ProductPage = () => {
                   </>
                 )}
 
-                {product.sizes && (
-                  <>
-                    <p className="option-title">Size:</p>
-                    <div className="options-container">
-                      {product.sizes.map((size) => (
-                        <button
-                          key={size}
-                          className={`size-button ${selectedSize === size ? 'selected' : ''}`}
-                          onClick={() => setSelectedSize(size)}
-                        >
-                          {size}
-                        </button>
-                      ))}
+                {/* === SIZE SELECTORS === */}
+                {product.is_combo ? (() => {
+                  const mList = parseComboSizes(product.male_sizes);
+                  const fList = parseComboSizes(product.female_sizes);
+                  const maleSizes = mList.length > 0 ? mList : ['S', 'M', 'L', 'XL', 'XXL'];
+                  const femaleSizes = fList.length > 0 ? fList : ['XS', 'S', 'M', 'L', 'XL'];
+                  return (
+                    // --- COMBO: Dual size selectors ---
+                    <div style={{ marginTop: '12px' }}>
+                      {/* Men's Size */}
+                      <>
+                        <p className="option-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '15px' }}>👔</span> Men&apos;s Size:
+                        </p>
+                        <div className="options-container" style={{ marginBottom: '12px' }}>
+                          {maleSizes.map((size) => (
+                            <button
+                              key={`m-${size}`}
+                              className={`size-button ${selectedMaleSize === size ? 'selected' : ''}`}
+                              onClick={() => setSelectedMaleSize(size)}
+                              style={selectedMaleSize === size ? { borderColor: '#3b82f6', color: '#3b82f6' } : {}}
+                            >
+                              {size}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                      {/* Women's Size */}
+                      <>
+                        <p className="option-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '15px' }}>👗</span> Women&apos;s Size:
+                        </p>
+                        <div className="options-container">
+                          {femaleSizes.map((size) => (
+                            <button
+                              key={`f-${size}`}
+                              className={`size-button ${selectedFemaleSize === size ? 'selected' : ''}`}
+                              onClick={() => setSelectedFemaleSize(size)}
+                              style={selectedFemaleSize === size ? { borderColor: '#ec4899', color: '#ec4899' } : {}}
+                            >
+                              {size}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                      {/* Combo selection summary */}
+                      {(selectedMaleSize || selectedFemaleSize) && (
+                        <div style={{ marginTop: '10px', padding: '8px 12px', background: '#f0f9ff', borderRadius: '8px', fontSize: '13px', color: '#0369a1', border: '1px solid #bae6fd' }}>
+                          <strong>Selected:</strong>
+                          {selectedMaleSize && <span style={{ marginLeft: '8px' }}>👔 Men&apos;s: <strong>{selectedMaleSize}</strong></span>}
+                          {selectedFemaleSize && <span style={{ marginLeft: '12px' }}>👗 Women&apos;s: <strong>{selectedFemaleSize}</strong></span>}
+                        </div>
+                      )}
                     </div>
-                  </>
+                  );
+                })() : (
+                  // --- REGULAR: Single size selector ---
+                  product.sizes && product.sizes.length > 0 && (
+                    <>
+                      <p className="option-title">Size:</p>
+                      <div className="options-container">
+                        {product.sizes.map((size) => (
+                          <button
+                            key={size}
+                            className={`size-button ${selectedSize === size ? 'selected' : ''}`}
+                            onClick={() => setSelectedSize(size)}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )
                 )}
               </>
           )}
+
 
 
           {/* === Buttons Row === */}
@@ -1117,7 +1217,11 @@ const ProductPage = () => {
                 const cartProduct = customDesignData
                   ? { ...product, ...customDesignData }
                   : product;
-                addToCart(cartProduct, quantity, selectedSize || "");
+                if (product.is_combo) {
+                  addToCart(cartProduct, quantity, null, selectedMaleSize || "", selectedFemaleSize || "");
+                } else {
+                  addToCart(cartProduct, quantity, selectedSize || "");
+                }
               }}
               disabled={isOutOfStock}
             >

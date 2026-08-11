@@ -365,6 +365,10 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
           color: item.selectedColor,
           selectedSize: item.selectedSize,
           selectedColor: item.selectedColor,
+          is_combo: item.is_combo || false,
+          combo_type: item.combo_type || null,
+          male_size: item.male_size || null,
+          female_size: item.female_size || null,
           custom_design_url: item.custom_design_url || null,
           custom_preview_url: item.custom_preview_url || null,
           custom_text: item.custom_text || null,
@@ -724,7 +728,14 @@ console.log('CheckoutPage render - isLoggedIn:', isLoggedIn, 'user:', user);
                     <img src={item.custom_preview_url || item.image} alt={item.name} className="item-image" />
                     <div className="item-details">
                       <p className="item-name">{item.name}</p>
-                      {item.selectedSize && <p className="item-size">Size: {item.selectedSize}</p>}
+                      {item.is_combo ? (
+                        <p className="item-size">
+                          {item.male_size && <span>👔 M: {item.male_size}</span>}
+                          {item.male_size && item.female_size && <span style={{ margin: '0 6px' }}>·</span>}
+                          {item.female_size && <span>👗 F: {item.female_size}</span>}
+                        </p>
+                      ) : item.selectedSize && <p className="item-size">Size: {item.selectedSize}</p>}
+
                       <p className="item-quantity">Qty: {item.quantity}</p>
                       <p className="item-price">₹{(item.price * item.quantity).toFixed(2)}</p>
                     </div>

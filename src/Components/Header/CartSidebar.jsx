@@ -293,9 +293,17 @@ const CartSidebar = () => {
                       />
                       <div>
                         <p className="item-name">{item.name}</p>
-                        {item.selectedSize && (
+                        {/* Size display: combo shows both, regular shows one */}
+                        {item.is_combo ? (
+                          <p className="item-size" style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#6b7280' }}>
+                            {item.male_size && <span>👔 M: {item.male_size}</span>}
+                            {item.male_size && item.female_size && <span style={{ margin: '0 4px' }}>·</span>}
+                            {item.female_size && <span>👗 F: {item.female_size}</span>}
+                          </p>
+                        ) : item.selectedSize && (
                             <p className="item-size" style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: '#6b7280' }}>Size: {item.selectedSize}</p>
                           )}
+
                         {item.custom_design_url && (
                           <p style={{ margin: '3px 0 0 0' }}>
                             <span style={{ 

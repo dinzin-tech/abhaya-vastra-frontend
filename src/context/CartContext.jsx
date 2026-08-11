@@ -88,12 +88,20 @@ export const CartProvider = ({ children }) => {
   // };
 
   // Add product with optional quantity and selected size
-  const addToCart = async (product, quantity = 1, selectedSize = null) => {
-    // If product has sizes, ensure size is selected
-    if (product.sizes && product.sizes.length > 0) {
-      if (!selectedSize) {
-        alert("Please select a size before adding to cart!");
+  const addToCart = async (product, quantity = 1, selectedSize = null, maleSize = null, femaleSize = null) => {
+    // For combo products, both male & female sizes must be selected
+    if (product.is_combo) {
+      if (!maleSize || !femaleSize) {
+        alert("Please select both Men's size and Women's size before adding to cart!");
         return;
+      }
+    } else {
+      // For normal products: if product has sizes, ensure size is selected
+      if (product.sizes && product.sizes.length > 0) {
+        if (!selectedSize) {
+          alert("Please select a size before adding to cart!");
+          return;
+        }
       }
     }
 
@@ -107,6 +115,12 @@ export const CartProvider = ({ children }) => {
         selectedColor: product.selectedColor || "",
         session_id: sessionId,
       };
+
+      // Include combo sizes if applicable
+      if (product.is_combo && maleSize && femaleSize) {
+        payload.male_size   = maleSize;
+        payload.female_size = femaleSize;
+      }
 
       if (product.custom_design_url) {
         payload.custom_design_url = product.custom_design_url;
@@ -132,7 +146,6 @@ export const CartProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      // alert("Failed to add item to cart. Please try again.");
     }
   };
 
